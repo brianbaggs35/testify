@@ -1,0 +1,92 @@
+<div class="px-4 py-6 sm:px-0">
+  <div class="border-4 border-dashed border-gray-200 rounded-lg p-6">
+    <h1 class="text-3xl font-bold text-gray-900 mb-8">Dashboard</h1>
+    
+    <p class="text-gray-600 mb-8">Welcome to the QA Testing Platform</p>
+    
+    <!-- Statistics Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+      <div class="bg-white overflow-hidden shadow rounded-lg">
+        <div class="p-5">
+          <div class="flex items-center">
+            <div class="flex-shrink-0">
+              <div class="w-8 h-8 bg-indigo-500 rounded-md flex items-center justify-center">
+                <span class="text-white font-bold">TC</span>
+              </div>
+            </div>
+            <div class="ml-5 w-0 flex-1">
+              <dl>
+                <dt class="text-sm font-medium text-gray-500 truncate">Total Test Cases</dt>
+                <dd class="text-lg font-medium text-gray-900"><%= @total_test_cases %></dd>
+              </dl>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-white overflow-hidden shadow rounded-lg">
+        <div class="p-5">
+          <div class="flex items-center">
+            <div class="flex-shrink-0">
+              <div class="w-8 h-8 bg-green-500 rounded-md flex items-center justify-center">
+                <span class="text-white font-bold">AC</span>
+              </div>
+            </div>
+            <div class="ml-5 w-0 flex-1">
+              <dl>
+                <dt class="text-sm font-medium text-gray-500 truncate">Active Test Cases</dt>
+                <dd class="text-lg font-medium text-gray-900"><%= @active_test_cases %></dd>
+              </dl>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-white overflow-hidden shadow rounded-lg">
+        <div class="p-5">
+          <div class="flex items-center">
+            <div class="flex-shrink-0">
+              <div class="w-8 h-8 bg-yellow-500 rounded-md flex items-center justify-center">
+                <span class="text-white font-bold">%</span>
+              </div>
+            </div>
+            <div class="ml-5 w-0 flex-1">
+              <dl>
+                <dt class="text-sm font-medium text-gray-500 truncate">Coverage</dt>
+                <dd class="text-lg font-medium text-gray-900"><%= @total_test_cases > 0 ? (@active_test_cases.to_f / @total_test_cases * 100).round(1) : 0 %>%</dd>
+              </dl>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Priority Breakdown -->
+    <div class="bg-white shadow rounded-lg mb-8">
+      <div class="px-4 py-5 sm:p-6">
+        <h3 class="text-lg leading-6 font-medium text-gray-900 mb-4">Test Cases by Priority</h3>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <% %w[Critical High Medium Low].each do |priority| %>
+            <div class="text-center">
+              <div class="text-2xl font-bold text-gray-900"><%= @priority_counts[priority] || 0 %></div>
+              <div class="text-sm text-gray-500"><%= priority %></div>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="bg-white shadow rounded-lg">
+      <div class="px-4 py-5 sm:p-6">
+        <h3 class="text-lg leading-6 font-medium text-gray-900 mb-4">Quick Actions</h3>
+        <div class="flex flex-wrap gap-4">
+          <%= link_to "Create Test Case", new_test_case_path, 
+                class: "bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-md text-sm font-medium" %>
+          <%= link_to "View All Test Cases", test_cases_path, 
+                class: "bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-md text-sm font-medium" %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
