@@ -69,6 +69,13 @@ group :development, :test do
   gem "rspec-rails"
   gem "factory_bot_rails"
   gem "faker"
+  
+  # Capybara for integration testing
+  gem "capybara"
+  gem "selenium-webdriver"
+  
+  # Rails controller testing
+  gem "rails-controller-testing"
 end
 
 group :development do
