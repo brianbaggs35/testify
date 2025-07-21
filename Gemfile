@@ -50,6 +50,7 @@ gem "prawn-table"
 
 # Charts and graphs
 gem "chartkick"
+gem "groupdate"
 
 # Rich text editor support
 gem "trix-rails", require: "trix"
