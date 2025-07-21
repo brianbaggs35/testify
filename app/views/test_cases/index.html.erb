@@ -1,0 +1,109 @@
+<div class="px-4 py-6 sm:px-0">
+  <div class="sm:flex sm:items-center">
+    <div class="sm:flex-auto">
+      <h1 class="text-2xl font-semibold text-gray-900">Test Cases</h1>
+      <p class="mt-2 text-sm text-gray-700">Manage your manual test cases</p>
+    </div>
+    <div class="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
+      <%= link_to "Create Test Case", new_test_case_path, 
+            class: "inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:w-auto" %>
+    </div>
+  </div>
+
+  <!-- Search and Filters -->
+  <%= form_with url: test_cases_path, method: :get, local: true, class: "mt-6" do |form| %>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+      <%= form.text_field :search, placeholder: "Search test cases...", 
+            value: params[:search], 
+            class: "block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" %>
+      
+      <%= form.select :status, 
+            options_for_select([['All Statuses', ''], ['Active', 'Active'], ['Inactive', 'Inactive'], ['Draft', 'Draft']], params[:status]), 
+            {}, 
+            { class: "block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" } %>
+      
+      <%= form.select :priority, 
+            options_for_select([['All Priorities', ''], ['Critical', 'Critical'], ['High', 'High'], ['Medium', 'Medium'], ['Low', 'Low']], params[:priority]), 
+            {}, 
+            { class: "block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" } %>
+    </div>
+    
+    <div class="flex gap-2">
+      <%= form.submit "Filter", class: "bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-md text-sm" %>
+      <%= link_to "Clear", test_cases_path, class: "bg-gray-300 hover:bg-gray-400 text-gray-700 px-4 py-2 rounded-md text-sm" %>
+    </div>
+  <% end %>
+
+  <!-- Test Cases Table -->
+  <div class="mt-8 flex flex-col">
+    <div class="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8">
+      <div class="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
+        <div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
+          <table class="min-w-full divide-y divide-gray-300">
+            <thead class="bg-gray-50">
+              <tr>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Title</th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Priority</th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Created</th>
+                <th scope="col" class="relative px-6 py-3"><span class="sr-only">Actions</span></th>
+              </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200">
+              <% @test_cases.each do |test_case| %>
+                <tr>
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <div>
+                      <div class="text-sm font-medium text-gray-900"><%= link_to test_case.title, test_case, class: "hover:text-indigo-600" %></div>
+                      <div class="text-sm text-gray-500"><%= truncate(test_case.description, length: 100) %></div>
+                    </div>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full 
+                      <%= case test_case.priority
+                          when 'Critical' then 'bg-red-100 text-red-800'
+                          when 'High' then 'bg-orange-100 text-orange-800'
+                          when 'Medium' then 'bg-yellow-100 text-yellow-800'
+                          when 'Low' then 'bg-green-100 text-green-800'
+                          end %>">
+                      <%= test_case.priority %>
+                    </span>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full 
+                      <%= case test_case.status
+                          when 'Active' then 'bg-green-100 text-green-800'
+                          when 'Inactive' then 'bg-gray-100 text-gray-800'
+                          when 'Draft' then 'bg-yellow-100 text-yellow-800'
+                          end %>">
+                      <%= test_case.status %>
+                    </span>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    <%= test_case.created_at.strftime("%b %d, %Y") %>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                    <%= link_to "View", test_case, class: "text-indigo-600 hover:text-indigo-900 mr-3" %>
+                    <%= link_to "Edit", edit_test_case_path(test_case), class: "text-indigo-600 hover:text-indigo-900 mr-3" %>
+                    <%= link_to "Delete", test_case, 
+                          method: :delete, 
+                          data: { confirm: "Are you sure?" }, 
+                          class: "text-red-600 hover:text-red-900" %>
+                  </td>
+                </tr>
+              <% end %>
+              
+              <% if @test_cases.empty? %>
+                <tr>
+                  <td colspan="5" class="px-6 py-4 text-center text-gray-500">
+                    No test cases found. <%= link_to "Create your first test case", new_test_case_path, class: "text-indigo-600 hover:text-indigo-900" %>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

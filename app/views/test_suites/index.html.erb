@@ -1,0 +1,59 @@
+<div class="px-4 py-6 sm:px-0">
+  <div class="sm:flex sm:items-center">
+    <div class="sm:flex-auto">
+      <h1 class="text-3xl font-bold text-gray-900">Test Suites</h1>
+      <p class="mt-2 text-sm text-gray-700">Organize your test cases into logical suites for efficient testing.</p>
+    </div>
+    <div class="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
+      <%= link_to "Create Test Suite", new_test_suite_path, 
+            class: "bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-md text-sm font-medium" %>
+    </div>
+  </div>
+
+  <div class="mt-8 flow-root">
+    <% if @test_suites.any? %>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <% @test_suites.each do |test_suite| %>
+          <div class="bg-white overflow-hidden shadow rounded-lg">
+            <div class="px-4 py-5 sm:p-6">
+              <div class="flex items-center justify-between">
+                <h3 class="text-lg font-medium text-gray-900 truncate">
+                  <%= link_to test_suite.name, test_suite, class: "hover:text-indigo-600" %>
+                </h3>
+                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                  <%= test_suite.test_case_count %> tests
+                </span>
+              </div>
+              <p class="mt-2 text-sm text-gray-500 line-clamp-2">
+                <%= test_suite.description %>
+              </p>
+              <div class="mt-4 flex justify-between items-center">
+                <div class="flex space-x-2">
+                  <%= link_to "View", test_suite, class: "text-indigo-600 hover:text-indigo-900 text-sm" %>
+                  <%= link_to "Edit", edit_test_suite_path(test_suite), class: "text-gray-600 hover:text-gray-900 text-sm" %>
+                  <%= link_to "Delete", test_suite, method: :delete, 
+                        confirm: "Are you sure?", 
+                        class: "text-red-600 hover:text-red-900 text-sm" %>
+                </div>
+                <%= link_to "Create Run", new_test_run_path(test_suite_id: test_suite.id), 
+                      class: "bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded text-sm" %>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    <% else %>
+      <div class="text-center py-12">
+        <div class="text-gray-400 mb-4">
+          <svg class="mx-auto h-24 w-24" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
+          </svg>
+        </div>
+        <h3 class="text-lg font-medium text-gray-900 mb-2">No test suites yet</h3>
+        <p class="text-gray-500 mb-6">Get started by creating your first test suite.</p>
+        <%= link_to "Create Test Suite", new_test_suite_path, 
+              class: "bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-md text-sm font-medium" %>
+      </div>
+    <% end %>
+  </div>
+</div>

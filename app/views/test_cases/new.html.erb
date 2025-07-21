@@ -1,0 +1,83 @@
+<div class="px-4 py-6 sm:px-0">
+  <div class="md:grid md:grid-cols-3 md:gap-6">
+    <div class="md:col-span-1">
+      <div class="px-4 sm:px-0">
+        <h3 class="text-lg font-medium leading-6 text-gray-900">Create Test Case</h3>
+        <p class="mt-1 text-sm text-gray-600">Add a new manual test case</p>
+        <div class="mt-4">
+          <%= link_to "Back to Test Cases", test_cases_path, class: "text-indigo-600 hover:text-indigo-900" %>
+        </div>
+      </div>
+    </div>
+    <div class="mt-5 md:mt-0 md:col-span-2">
+      <%= form_with model: @test_case, local: true, class: "space-y-6" do |form| %>
+        <div class="shadow sm:rounded-md sm:overflow-hidden">
+          <div class="px-4 py-5 bg-white space-y-6 sm:p-6">
+            <!-- Title -->
+            <div>
+              <%= form.label :title, class: "block text-sm font-medium text-gray-700" %>
+              <%= form.text_field :title, 
+                    class: "mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" %>
+              <% if @test_case.errors[:title].any? %>
+                <p class="mt-2 text-sm text-red-600"><%= @test_case.errors[:title].first %></p>
+              <% end %>
+            </div>
+
+            <!-- Description -->
+            <div>
+              <%= form.label :description, class: "block text-sm font-medium text-gray-700" %>
+              <%= form.text_area :description, 
+                    rows: 4,
+                    class: "mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" %>
+              <% if @test_case.errors[:description].any? %>
+                <p class="mt-2 text-sm text-red-600"><%= @test_case.errors[:description].first %></p>
+              <% end %>
+            </div>
+
+            <!-- Steps -->
+            <div>
+              <%= form.label :steps, "Test Steps", class: "block text-sm font-medium text-gray-700" %>
+              <p class="text-sm text-gray-500">Describe the steps to execute this test case</p>
+              <%= form.text_area :steps, 
+                    rows: 6,
+                    class: "mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" %>
+              <% if @test_case.errors[:steps].any? %>
+                <p class="mt-2 text-sm text-red-600"><%= @test_case.errors[:steps].first %></p>
+              <% end %>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <!-- Priority -->
+              <div>
+                <%= form.label :priority, class: "block text-sm font-medium text-gray-700" %>
+                <%= form.select :priority, 
+                      options_for_select([['Select Priority', ''], ['Low', 'Low'], ['Medium', 'Medium'], ['High', 'High'], ['Critical', 'Critical']], @test_case.priority), 
+                      {}, 
+                      { class: "mt-1 block w-full bg-white border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" } %>
+                <% if @test_case.errors[:priority].any? %>
+                  <p class="mt-2 text-sm text-red-600"><%= @test_case.errors[:priority].first %></p>
+                <% end %>
+              </div>
+
+              <!-- Status -->
+              <div>
+                <%= form.label :status, class: "block text-sm font-medium text-gray-700" %>
+                <%= form.select :status, 
+                      options_for_select([['Select Status', ''], ['Draft', 'Draft'], ['Active', 'Active'], ['Inactive', 'Inactive']], @test_case.status), 
+                      {}, 
+                      { class: "mt-1 block w-full bg-white border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" } %>
+                <% if @test_case.errors[:status].any? %>
+                  <p class="mt-2 text-sm text-red-600"><%= @test_case.errors[:status].first %></p>
+                <% end %>
+              </div>
+            </div>
+          </div>
+          <div class="px-4 py-3 bg-gray-50 text-right sm:px-6">
+            <%= form.submit "Create Test Case", 
+                  class: "inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
