@@ -1,91 +1,441 @@
-<div class="px-4 py-6 sm:px-0">
-  <div class="sm:flex sm:items-center">
-    <div class="sm:flex-auto">
-      <h1 class="text-3xl font-bold text-gray-900">JUnit Test Results</h1>
-      <p class="mt-2 text-sm text-gray-700">Upload and analyze JUnit XML test results</p>
-    </div>
-    <div class="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
-      <%= link_to "Upload JUnit XML", new_junit_upload_path, 
-            class: "bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-md text-sm font-medium" %>
-    </div>
-  </div>
+<% content_for :title, "Automated Test Results" %>
 
-  <div class="mt-8 flow-root">
-    <% if @junit_uploads.any? %>
-      <div class="space-y-6">
-        <% @junit_uploads.each do |upload| %>
-          <div class="bg-white overflow-hidden shadow rounded-lg">
-            <div class="px-4 py-5 sm:p-6">
-              <div class="flex items-center justify-between">
-                <div class="flex-1 min-w-0">
-                  <h3 class="text-lg font-medium text-gray-900">
-                    <%= link_to upload.filename, upload, class: "hover:text-indigo-600" %>
-                  </h3>
-                  <p class="mt-1 text-sm text-gray-500">
-                    Size: <%= upload.file_size_human %> • 
-                    Uploaded: <%= upload.uploaded_at.strftime("%b %d, %Y at %I:%M %p") %>
-                  </p>
-                  <div class="mt-2 flex items-center space-x-4">
-                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
-                      <%= case upload.status
-                          when 'Parsed' then 'bg-green-100 text-green-800'
-                          when 'Error' then 'bg-red-100 text-red-800'
-                          else 'bg-yellow-100 text-yellow-800'
-                          end %>">
-                      <%= upload.status %>
-                    </span>
-                    <% if upload.status == 'Parsed' %>
-                      <span class="text-sm text-gray-500">
-                        <%= upload.total_count %> tests
-                      </span>
-                    <% end %>
-                  </div>
-                </div>
-                <div class="flex items-center space-x-2">
-                  <%= link_to "View", upload, class: "text-indigo-600 hover:text-indigo-900 text-sm" %>
-                  <%= link_to "Delete", upload, method: :delete, 
-                        confirm: "Are you sure?", 
-                        class: "text-red-600 hover:text-red-900 text-sm" %>
-                </div>
-              </div>
-              
-              <% if upload.status == 'Parsed' && upload.total_count > 0 %>
-                <!-- Test Results Summary -->
-                <div class="mt-4 grid grid-cols-2 md:grid-cols-4 gap-4">
-                  <div class="text-center">
-                    <div class="text-lg font-bold text-green-600"><%= upload.passed_count %></div>
-                    <div class="text-xs text-gray-500">Passed</div>
-                  </div>
-                  <div class="text-center">
-                    <div class="text-lg font-bold text-red-600"><%= upload.failed_count %></div>
-                    <div class="text-xs text-gray-500">Failed</div>
-                  </div>
-                  <div class="text-center">
-                    <div class="text-lg font-bold text-yellow-600"><%= upload.error_count %></div>
-                    <div class="text-xs text-gray-500">Error</div>
-                  </div>
-                  <div class="text-center">
-                    <div class="text-lg font-bold text-gray-600"><%= upload.skipped_count %></div>
-                    <div class="text-xs text-gray-500">Skipped</div>
-                  </div>
-                </div>
-              <% end %>
-            </div>
-          </div>
-        <% end %>
-      </div>
-    <% else %>
-      <div class="text-center py-12">
-        <div class="text-gray-400 mb-4">
-          <svg class="mx-auto h-24 w-24" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
-          </svg>
-        </div>
-        <h3 class="text-lg font-medium text-gray-900 mb-2">No JUnit uploads yet</h3>
-        <p class="text-gray-500 mb-6">Upload JUnit XML files to analyze your automated test results.</p>
-        <%= link_to "Upload JUnit XML", new_junit_upload_path, 
-              class: "bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-md text-sm font-medium" %>
-      </div>
+<div class="sm:flex sm:items-center">
+  <div class="sm:flex-auto">
+    <h1 class="text-2xl font-semibold text-gray-900">Automated Test Results</h1>
+    <p class="mt-2 text-sm text-gray-700">View and analyze JUnit XML test results from automated test runs.</p>
+  </div>
+  <div class="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
+    <%= link_to new_junit_upload_path, 
+          class: "inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" do %>
+      <svg class="-ml-1 mr-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+        <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
+      </svg>
+      Upload JUnit XML
     <% end %>
   </div>
 </div>
+
+<!-- Test Run Selection -->
+<% if @junit_uploads.any? %>
+  <div class="mt-6 bg-white shadow rounded-lg">
+    <div class="px-4 py-5 sm:p-6">
+      <h3 class="text-lg leading-6 font-medium text-gray-900">Select Test Run</h3>
+      <div class="mt-2 max-w-xl text-sm text-gray-500">
+        <p>Choose a test run to view detailed results below.</p>
+      </div>
+      <div class="mt-5">
+        <select id="testRunSelect" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
+          <option value="">Select a test run...</option>
+          <% @junit_uploads.each do |upload| %>
+            <option value="<%= upload.id %>" data-upload='<%= upload.to_json(include: :junit_test_results) %>'>
+              <%= upload.filename %> - <%= upload.uploaded_at.strftime("%b %d, %Y") %> 
+              (<%= upload.total_count %> tests)
+            </option>
+          <% end %>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <!-- Test Results Display -->
+  <div id="testResultsSection" class="mt-8 hidden">
+    <!-- Summary Cards -->
+    <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+      <div class="bg-white overflow-hidden shadow rounded-lg">
+        <div class="p-5">
+          <div class="flex items-center">
+            <div class="flex-shrink-0">
+              <svg class="h-6 w-6 text-blue-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 8h6m-6 4h6" />
+              </svg>
+            </div>
+            <div class="ml-5 w-0 flex-1">
+              <dl>
+                <dt class="text-sm font-medium text-gray-500 truncate">Total Tests</dt>
+                <dd class="text-lg font-medium text-gray-900" id="totalTests">0</dd>
+              </dl>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-white overflow-hidden shadow rounded-lg">
+        <div class="p-5">
+          <div class="flex items-center">
+            <div class="flex-shrink-0">
+              <svg class="h-6 w-6 text-green-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+            <div class="ml-5 w-0 flex-1">
+              <dl>
+                <dt class="text-sm font-medium text-gray-500 truncate">Passed</dt>
+                <dd class="text-lg font-medium text-gray-900" id="passedTests">0</dd>
+              </dl>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-white overflow-hidden shadow rounded-lg">
+        <div class="p-5">
+          <div class="flex items-center">
+            <div class="flex-shrink-0">
+              <svg class="h-6 w-6 text-red-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+            <div class="ml-5 w-0 flex-1">
+              <dl>
+                <dt class="text-sm font-medium text-gray-500 truncate">Failed</dt>
+                <dd class="text-lg font-medium text-gray-900" id="failedTests">0</dd>
+              </dl>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-white overflow-hidden shadow rounded-lg">
+        <div class="p-5">
+          <div class="flex items-center">
+            <div class="flex-shrink-0">
+              <svg class="h-6 w-6 text-yellow-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
+              </svg>
+            </div>
+            <div class="ml-5 w-0 flex-1">
+              <dl>
+                <dt class="text-sm font-medium text-gray-500 truncate">Skipped</dt>
+                <dd class="text-lg font-medium text-gray-900" id="skippedTests">0</dd>
+              </dl>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Chart Section -->
+    <div class="mt-8 bg-white shadow rounded-lg">
+      <div class="px-4 py-5 sm:p-6">
+        <h3 class="text-lg leading-6 font-medium text-gray-900 mb-4">Test Results Visualization</h3>
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div>
+            <h4 class="text-base font-medium text-gray-900 mb-2">Results Distribution</h4>
+            <div id="pieChart" style="height: 300px;"></div>
+          </div>
+          <div>
+            <h4 class="text-base font-medium text-gray-900 mb-2">Results by Class</h4>
+            <div id="barChart" style="height: 300px;"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Test Results Table -->
+    <div class="mt-8 bg-white shadow rounded-lg">
+      <div class="px-4 py-5 sm:p-6">
+        <h3 class="text-lg leading-6 font-medium text-gray-900 mb-4">Detailed Test Results</h3>
+        
+        <!-- Search and Filter -->
+        <div class="mb-4 flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4">
+          <div class="flex-1">
+            <input type="text" id="searchInput" placeholder="Search tests..." 
+                   class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">
+          </div>
+          <div>
+            <select id="statusFilter" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
+              <option value="">All Status</option>
+              <option value="passed">Passed</option>
+              <option value="failed">Failed</option>
+              <option value="error">Error</option>
+              <option value="skipped">Skipped</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
+          <table class="min-w-full divide-y divide-gray-300" id="testResultsTable">
+            <thead class="bg-gray-50">
+              <tr>
+                <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">Test Name</th>
+                <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Class</th>
+                <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Status</th>
+                <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Execution Time</th>
+                <th scope="col" class="relative py-3.5 pl-3 pr-4 sm:pr-6">
+                  <span class="sr-only">Actions</span>
+                </th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-200 bg-white" id="testResultsBody">
+              <!-- Table rows will be populated by JavaScript -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+<% else %>
+  <!-- Empty State -->
+  <div class="mt-8 text-center">
+    <svg class="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48">
+      <path d="M34 40h10v-4a6 6 0 00-10.712-3.714M34 40H14m20 0v-4a9.971 9.971 0 00-.712-3.714M14 40H4v-4a6 6 0 0110.713-3.714M14 40v-4c0-1.313.253-2.566.713-3.714m0 0A10.003 10.003 0 0124 26c4.21 0 7.813 2.602 9.288 6.286M30 14a6 6 0 11-12 0 6 6 0 0112 0zm12 6a4 4 0 11-8 0 4 4 0 018 0zm-28 0a4 4 0 11-8 0 4 4 0 018 0z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+    </svg>
+    <h3 class="mt-2 text-sm font-medium text-gray-900">No test uploads</h3>
+    <p class="mt-1 text-sm text-gray-500">Get started by uploading a JUnit XML file.</p>
+    <div class="mt-6">
+      <%= link_to new_junit_upload_path, 
+            class: "inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" do %>
+        <svg class="-ml-1 mr-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
+        </svg>
+        Upload JUnit XML
+      <% end %>
+    </div>
+  </div>
+<% end %>
+
+<!-- Test Detail Modal -->
+<div id="testDetailModal" class="fixed inset-0 z-50 overflow-y-auto hidden" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+  <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+    <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true" onclick="closeModal()"></div>
+    <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+    <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+      <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+        <div class="sm:flex sm:items-start">
+          <div class="mt-3 text-center sm:mt-0 sm:text-left w-full">
+            <h3 class="text-lg leading-6 font-medium text-gray-900" id="modal-title">
+              Test Details
+            </h3>
+            <div class="mt-2">
+              <div id="modalContent" class="text-sm text-gray-500">
+                <!-- Modal content will be populated by JavaScript -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+        <button type="button" onclick="closeModal()" class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<% content_for :javascript do %>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://unpkg.com/chartkick@4"></script>
+  <script>
+    let currentTestResults = [];
+    let pieChart, barChart;
+
+    document.getElementById('testRunSelect').addEventListener('change', function() {
+      const selectedOption = this.options[this.selectedIndex];
+      if (selectedOption.value) {
+        const uploadData = JSON.parse(selectedOption.dataset.upload);
+        loadTestResults(uploadData);
+      } else {
+        document.getElementById('testResultsSection').classList.add('hidden');
+      }
+    });
+
+    function loadTestResults(uploadData) {
+      currentTestResults = uploadData.junit_test_results || [];
+      
+      // Update summary cards
+      const totalTests = currentTestResults.length;
+      const passedTests = currentTestResults.filter(t => t.status === 'passed').length;
+      const failedTests = currentTestResults.filter(t => t.status === 'failed').length;
+      const errorTests = currentTestResults.filter(t => t.status === 'error').length;
+      const skippedTests = currentTestResults.filter(t => t.status === 'skipped').length;
+
+      document.getElementById('totalTests').textContent = totalTests;
+      document.getElementById('passedTests').textContent = passedTests;
+      document.getElementById('failedTests').textContent = failedTests + errorTests;
+      document.getElementById('skippedTests').textContent = skippedTests;
+
+      // Update charts
+      updateCharts(passedTests, failedTests + errorTests, skippedTests);
+      
+      // Update table
+      updateTable(currentTestResults);
+      
+      // Show results section
+      document.getElementById('testResultsSection').classList.remove('hidden');
+    }
+
+    function updateCharts(passed, failed, skipped) {
+      // Pie chart
+      const pieCtx = document.getElementById('pieChart');
+      if (pieChart) pieChart.destroy();
+      pieChart = new Chart(pieCtx, {
+        type: 'pie',
+        data: {
+          labels: ['Passed', 'Failed/Error', 'Skipped'],
+          datasets: [{
+            data: [passed, failed, skipped],
+            backgroundColor: ['#10B981', '#EF4444', '#F59E0B']
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false
+        }
+      });
+
+      // Bar chart by class
+      const classResults = {};
+      currentTestResults.forEach(test => {
+        if (!classResults[test.class_name]) {
+          classResults[test.class_name] = { passed: 0, failed: 0, skipped: 0 };
+        }
+        if (test.status === 'passed') classResults[test.class_name].passed++;
+        else if (test.status === 'failed' || test.status === 'error') classResults[test.class_name].failed++;
+        else if (test.status === 'skipped') classResults[test.class_name].skipped++;
+      });
+
+      const barCtx = document.getElementById('barChart');
+      if (barChart) barChart.destroy();
+      barChart = new Chart(barCtx, {
+        type: 'bar',
+        data: {
+          labels: Object.keys(classResults),
+          datasets: [
+            {
+              label: 'Passed',
+              data: Object.values(classResults).map(r => r.passed),
+              backgroundColor: '#10B981'
+            },
+            {
+              label: 'Failed/Error',
+              data: Object.values(classResults).map(r => r.failed),
+              backgroundColor: '#EF4444'
+            },
+            {
+              label: 'Skipped',
+              data: Object.values(classResults).map(r => r.skipped),
+              backgroundColor: '#F59E0B'
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            x: { stacked: true },
+            y: { stacked: true }
+          }
+        }
+      });
+    }
+
+    function updateTable(testResults) {
+      const tbody = document.getElementById('testResultsBody');
+      tbody.innerHTML = '';
+      
+      testResults.forEach(test => {
+        const row = document.createElement('tr');
+        row.className = 'hover:bg-gray-50 cursor-pointer';
+        row.onclick = () => showTestDetails(test);
+        
+        const statusColor = getStatusColor(test.status);
+        
+        row.innerHTML = `
+          <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
+            ${test.test_name}
+          </td>
+          <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+            ${test.class_name}
+          </td>
+          <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+            <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full ${statusColor}">
+              ${test.status.charAt(0).toUpperCase() + test.status.slice(1)}
+            </span>
+          </td>
+          <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+            ${test.execution_time}s
+          </td>
+          <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
+            <button onclick="event.stopPropagation(); showTestDetails(${JSON.stringify(test).replace(/"/g, '&quot;')})" class="text-indigo-600 hover:text-indigo-900">
+              View Details
+            </button>
+          </td>
+        `;
+        
+        tbody.appendChild(row);
+      });
+    }
+
+    function getStatusColor(status) {
+      switch(status) {
+        case 'passed': return 'bg-green-100 text-green-800';
+        case 'failed': return 'bg-red-100 text-red-800';
+        case 'error': return 'bg-orange-100 text-orange-800';
+        case 'skipped': return 'bg-yellow-100 text-yellow-800';
+        default: return 'bg-gray-100 text-gray-800';
+      }
+    }
+
+    function showTestDetails(test) {
+      const modal = document.getElementById('testDetailModal');
+      const content = document.getElementById('modalContent');
+      
+      content.innerHTML = `
+        <div class="space-y-4">
+          <div>
+            <label class="block text-sm font-medium text-gray-700">Test Name</label>
+            <p class="mt-1 text-sm text-gray-900">${test.test_name}</p>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700">Class Name</label>
+            <p class="mt-1 text-sm text-gray-900">${test.class_name}</p>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700">Status</label>
+            <p class="mt-1">
+              <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getStatusColor(test.status)}">
+                ${test.status.charAt(0).toUpperCase() + test.status.slice(1)}
+              </span>
+            </p>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700">Execution Time</label>
+            <p class="mt-1 text-sm text-gray-900">${test.execution_time}s</p>
+          </div>
+          ${test.failure_message ? `
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Failure Message</label>
+              <p class="mt-1 text-sm text-gray-900 bg-gray-50 p-3 rounded-md">${test.failure_message}</p>
+            </div>
+          ` : ''}
+        </div>
+      `;
+      
+      modal.classList.remove('hidden');
+    }
+
+    function closeModal() {
+      document.getElementById('testDetailModal').classList.add('hidden');
+    }
+
+    // Search and filter functionality
+    document.getElementById('searchInput').addEventListener('input', filterTable);
+    document.getElementById('statusFilter').addEventListener('change', filterTable);
+
+    function filterTable() {
+      const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+      const statusFilter = document.getElementById('statusFilter').value;
+      
+      let filteredResults = currentTestResults.filter(test => {
+        const matchesSearch = test.test_name.toLowerCase().includes(searchTerm) || 
+                            test.class_name.toLowerCase().includes(searchTerm);
+        const matchesStatus = !statusFilter || test.status === statusFilter;
+        return matchesSearch && matchesStatus;
+      });
+      
+      updateTable(filteredResults);
+    }
+  </script>
+<% end %>

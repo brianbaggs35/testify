@@ -1,109 +1,403 @@
-<div class="px-4 py-6 sm:px-0">
-  <div class="sm:flex sm:items-center">
-    <div class="sm:flex-auto">
-      <h1 class="text-2xl font-semibold text-gray-900">Test Cases</h1>
-      <p class="mt-2 text-sm text-gray-700">Manage your manual test cases</p>
-    </div>
-    <div class="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
-      <%= link_to "Create Test Case", new_test_case_path, 
-            class: "inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:w-auto" %>
+<% content_for :title, "Test Cases" %>
+
+<div class="sm:flex sm:items-center">
+  <div class="sm:flex-auto">
+    <h1 class="text-2xl font-semibold text-gray-900">Test Cases</h1>
+    <p class="mt-2 text-sm text-gray-700">Create and manage manual test cases for your testing scenarios.</p>
+  </div>
+  <div class="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
+    <button onclick="openCreateModal()" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+      <svg class="-ml-1 mr-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+        <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
+      </svg>
+      Create Test Case
+    </button>
+  </div>
+</div>
+
+<!-- Search and Filters -->
+<div class="mt-6 bg-white shadow rounded-lg">
+  <div class="px-4 py-5 sm:p-6">
+    <%= form_with url: test_cases_path, method: :get, local: true, class: "space-y-4" do |form| %>
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <%= form.text_field :search, placeholder: "Search test cases...", 
+              value: params[:search], 
+              class: "block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" %>
+        
+        <%= form.select :status, 
+              options_for_select([['All Statuses', ''], ['Active', 'Active'], ['Inactive', 'Inactive'], ['Draft', 'Draft']], params[:status]), 
+              {}, 
+              { class: "block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" } %>
+        
+        <%= form.select :priority, 
+              options_for_select([['All Priorities', ''], ['Critical', 'Critical'], ['High', 'High'], ['Medium', 'Medium'], ['Low', 'Low']], params[:priority]), 
+              {}, 
+              { class: "block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" } %>
+              
+        <div class="flex gap-2">
+          <%= form.submit "Filter", class: "bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-md text-sm flex-1" %>
+          <%= link_to "Clear", test_cases_path, class: "bg-gray-300 hover:bg-gray-400 text-gray-700 px-4 py-2 rounded-md text-sm flex-1 text-center" %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<!-- Summary Stats -->
+<div class="mt-6 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+  <div class="bg-white overflow-hidden shadow rounded-lg">
+    <div class="p-5">
+      <div class="flex items-center">
+        <div class="flex-shrink-0">
+          <svg class="h-6 w-6 text-blue-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+          </svg>
+        </div>
+        <div class="ml-5 w-0 flex-1">
+          <dl>
+            <dt class="text-sm font-medium text-gray-500 truncate">Total Test Cases</dt>
+            <dd class="text-lg font-medium text-gray-900"><%= TestCase.count %></dd>
+          </dl>
+        </div>
+      </div>
     </div>
   </div>
 
-  <!-- Search and Filters -->
-  <%= form_with url: test_cases_path, method: :get, local: true, class: "mt-6" do |form| %>
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-      <%= form.text_field :search, placeholder: "Search test cases...", 
-            value: params[:search], 
-            class: "block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" %>
-      
-      <%= form.select :status, 
-            options_for_select([['All Statuses', ''], ['Active', 'Active'], ['Inactive', 'Inactive'], ['Draft', 'Draft']], params[:status]), 
-            {}, 
-            { class: "block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" } %>
-      
-      <%= form.select :priority, 
-            options_for_select([['All Priorities', ''], ['Critical', 'Critical'], ['High', 'High'], ['Medium', 'Medium'], ['Low', 'Low']], params[:priority]), 
-            {}, 
-            { class: "block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" } %>
+  <div class="bg-white overflow-hidden shadow rounded-lg">
+    <div class="p-5">
+      <div class="flex items-center">
+        <div class="flex-shrink-0">
+          <svg class="h-6 w-6 text-green-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+        </div>
+        <div class="ml-5 w-0 flex-1">
+          <dl>
+            <dt class="text-sm font-medium text-gray-500 truncate">Active</dt>
+            <dd class="text-lg font-medium text-gray-900"><%= TestCase.where(status: 'Active').count %></dd>
+          </dl>
+        </div>
+      </div>
     </div>
-    
-    <div class="flex gap-2">
-      <%= form.submit "Filter", class: "bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-md text-sm" %>
-      <%= link_to "Clear", test_cases_path, class: "bg-gray-300 hover:bg-gray-400 text-gray-700 px-4 py-2 rounded-md text-sm" %>
-    </div>
-  <% end %>
+  </div>
 
-  <!-- Test Cases Table -->
-  <div class="mt-8 flex flex-col">
-    <div class="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8">
-      <div class="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
-        <div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
-          <table class="min-w-full divide-y divide-gray-300">
-            <thead class="bg-gray-50">
-              <tr>
-                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Title</th>
-                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Priority</th>
-                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Created</th>
-                <th scope="col" class="relative px-6 py-3"><span class="sr-only">Actions</span></th>
-              </tr>
-            </thead>
-            <tbody class="bg-white divide-y divide-gray-200">
-              <% @test_cases.each do |test_case| %>
-                <tr>
-                  <td class="px-6 py-4 whitespace-nowrap">
-                    <div>
-                      <div class="text-sm font-medium text-gray-900"><%= link_to test_case.title, test_case, class: "hover:text-indigo-600" %></div>
-                      <div class="text-sm text-gray-500"><%= truncate(test_case.description, length: 100) %></div>
-                    </div>
-                  </td>
-                  <td class="px-6 py-4 whitespace-nowrap">
-                    <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full 
-                      <%= case test_case.priority
-                          when 'Critical' then 'bg-red-100 text-red-800'
-                          when 'High' then 'bg-orange-100 text-orange-800'
-                          when 'Medium' then 'bg-yellow-100 text-yellow-800'
-                          when 'Low' then 'bg-green-100 text-green-800'
-                          end %>">
-                      <%= test_case.priority %>
-                    </span>
-                  </td>
-                  <td class="px-6 py-4 whitespace-nowrap">
-                    <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full 
-                      <%= case test_case.status
-                          when 'Active' then 'bg-green-100 text-green-800'
-                          when 'Inactive' then 'bg-gray-100 text-gray-800'
-                          when 'Draft' then 'bg-yellow-100 text-yellow-800'
-                          end %>">
-                      <%= test_case.status %>
-                    </span>
-                  </td>
-                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    <%= test_case.created_at.strftime("%b %d, %Y") %>
-                  </td>
-                  <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                    <%= link_to "View", test_case, class: "text-indigo-600 hover:text-indigo-900 mr-3" %>
-                    <%= link_to "Edit", edit_test_case_path(test_case), class: "text-indigo-600 hover:text-indigo-900 mr-3" %>
-                    <%= link_to "Delete", test_case, 
-                          method: :delete, 
-                          data: { confirm: "Are you sure?" }, 
-                          class: "text-red-600 hover:text-red-900" %>
-                  </td>
-                </tr>
-              <% end %>
-              
-              <% if @test_cases.empty? %>
-                <tr>
-                  <td colspan="5" class="px-6 py-4 text-center text-gray-500">
-                    No test cases found. <%= link_to "Create your first test case", new_test_case_path, class: "text-indigo-600 hover:text-indigo-900" %>
-                  </td>
-                </tr>
-              <% end %>
-            </tbody>
-          </table>
+  <div class="bg-white overflow-hidden shadow rounded-lg">
+    <div class="p-5">
+      <div class="flex items-center">
+        <div class="flex-shrink-0">
+          <svg class="h-6 w-6 text-red-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
+          </svg>
+        </div>
+        <div class="ml-5 w-0 flex-1">
+          <dl>
+            <dt class="text-sm font-medium text-gray-500 truncate">High Priority</dt>
+            <dd class="text-lg font-medium text-gray-900"><%= TestCase.where(priority: ['Critical', 'High']).count %></dd>
+          </dl>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="bg-white overflow-hidden shadow rounded-lg">
+    <div class="p-5">
+      <div class="flex items-center">
+        <div class="flex-shrink-0">
+          <svg class="h-6 w-6 text-yellow-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+          </svg>
+        </div>
+        <div class="ml-5 w-0 flex-1">
+          <dl>
+            <dt class="text-sm font-medium text-gray-500 truncate">Draft</dt>
+            <dd class="text-lg font-medium text-gray-900"><%= TestCase.where(status: 'Draft').count %></dd>
+          </dl>
         </div>
       </div>
     </div>
   </div>
 </div>
+
+<!-- Test Cases Table -->
+<div class="mt-8 bg-white shadow rounded-lg">
+  <div class="px-4 py-5 sm:p-6">
+    <div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
+      <table class="min-w-full divide-y divide-gray-300">
+        <thead class="bg-gray-50">
+          <tr>
+            <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">Title</th>
+            <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Priority</th>
+            <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Status</th>
+            <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Created</th>
+            <th scope="col" class="relative py-3.5 pl-3 pr-4 sm:pr-6">
+              <span class="sr-only">Actions</span>
+            </th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-200 bg-white">
+          <% @test_cases.each do |test_case| %>
+            <tr class="hover:bg-gray-50 cursor-pointer" onclick="showTestCaseDetails(<%= test_case.id %>)">
+              <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm sm:pl-6">
+                <div>
+                  <div class="font-medium text-gray-900"><%= test_case.title %></div>
+                  <div class="text-gray-500"><%= truncate(test_case.description, length: 80) %></div>
+                </div>
+              </td>
+              <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full 
+                  <%= case test_case.priority
+                      when 'Critical' then 'bg-red-100 text-red-800'
+                      when 'High' then 'bg-orange-100 text-orange-800'
+                      when 'Medium' then 'bg-yellow-100 text-yellow-800'
+                      when 'Low' then 'bg-green-100 text-green-800'
+                      end %>">
+                  <%= test_case.priority %>
+                </span>
+              </td>
+              <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full 
+                  <%= case test_case.status
+                      when 'Active' then 'bg-green-100 text-green-800'
+                      when 'Inactive' then 'bg-gray-100 text-gray-800'
+                      when 'Draft' then 'bg-yellow-100 text-yellow-800'
+                      end %>">
+                  <%= test_case.status %>
+                </span>
+              </td>
+              <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                <%= test_case.created_at.strftime("%b %d, %Y") %>
+              </td>
+              <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
+                <div class="flex justify-end space-x-2" onclick="event.stopPropagation()">
+                  <%= link_to test_case_path(test_case), class: "text-indigo-600 hover:text-indigo-900" do %>
+                    <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                    </svg>
+                  <% end %>
+                  <%= link_to edit_test_case_path(test_case), class: "text-indigo-600 hover:text-indigo-900" do %>
+                    <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                    </svg>
+                  <% end %>
+                  <%= link_to test_case_path(test_case), method: :delete, 
+                        data: { confirm: "Are you sure?" }, 
+                        class: "text-red-600 hover:text-red-900" do %>
+                    <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                    </svg>
+                  <% end %>
+                </div>
+              </td>
+            </tr>
+          <% end %>
+          
+          <% if @test_cases.empty? %>
+            <tr>
+              <td colspan="5" class="px-6 py-12 text-center">
+                <svg class="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48">
+                  <path d="M34 40h10v-4a6 6 0 00-10.712-3.714M34 40H14m20 0v-4a9.971 9.971 0 00-.712-3.714M14 40H4v-4a6 6 0 0110.713-3.714M14 40v-4c0-1.313.253-2.566.713-3.714m0 0A10.003 10.003 0 0124 26c4.21 0 7.813 2.602 9.288 6.286M30 14a6 6 0 11-12 0 6 6 0 0112 0zm12 6a4 4 0 11-8 0 4 4 0 018 0zm-28 0a4 4 0 11-8 0 4 4 0 018 0z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+                <h3 class="mt-2 text-sm font-medium text-gray-900">No test cases found</h3>
+                <p class="mt-1 text-sm text-gray-500">Get started by creating a new test case.</p>
+                <div class="mt-6">
+                  <button onclick="openCreateModal()" class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                    <svg class="-ml-1 mr-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                      <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
+                    </svg>
+                    Create Test Case
+                  </button>
+                </div>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- Create Test Case Modal -->
+<div id="createTestCaseModal" class="fixed inset-0 z-50 overflow-y-auto hidden" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+  <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+    <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true" onclick="closeCreateModal()"></div>
+    <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+    <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-2xl sm:w-full">
+      <%= form_with model: TestCase.new, url: test_cases_path, id: "createTestCaseForm", class: "bg-white" do |form| %>
+        <div class="px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+          <h3 class="text-lg leading-6 font-medium text-gray-900 mb-4">Create New Test Case</h3>
+          
+          <div class="space-y-4">
+            <div>
+              <%= form.label :title, class: "block text-sm font-medium text-gray-700" %>
+              <%= form.text_field :title, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm", required: true %>
+            </div>
+            
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <%= form.label :priority, class: "block text-sm font-medium text-gray-700" %>
+                <%= form.select :priority, 
+                      options_for_select([['Low', 'Low'], ['Medium', 'Medium'], ['High', 'High'], ['Critical', 'Critical']]), 
+                      { selected: 'Medium' },
+                      { class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" } %>
+              </div>
+              
+              <div>
+                <%= form.label :status, class: "block text-sm font-medium text-gray-700" %>
+                <%= form.select :status, 
+                      options_for_select([['Draft', 'Draft'], ['Active', 'Active'], ['Inactive', 'Inactive']]), 
+                      { selected: 'Draft' },
+                      { class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" } %>
+              </div>
+            </div>
+            
+            <div>
+              <%= form.label :description, class: "block text-sm font-medium text-gray-700" %>
+              <%= form.text_area :description, rows: 3, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm", required: true %>
+            </div>
+            
+            <div>
+              <%= form.label :steps, class: "block text-sm font-medium text-gray-700" %>
+              <div class="mt-1">
+                <%= form.text_area :steps, rows: 5, class: "block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm", placeholder: "1. Step one\n2. Step two\n3. Step three..." %>
+              </div>
+              <p class="mt-2 text-sm text-gray-500">Enter test steps, one per line.</p>
+            </div>
+          </div>
+        </div>
+        
+        <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+          <%= form.submit "Create Test Case", class: "w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:ml-3 sm:w-auto sm:text-sm" %>
+          <button type="button" onclick="closeCreateModal()" class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
+            Cancel
+          </button>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<!-- Test Case Details Modal -->
+<div id="testCaseDetailsModal" class="fixed inset-0 z-50 overflow-y-auto hidden" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+  <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+    <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true" onclick="closeDetailsModal()"></div>
+    <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+    <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-2xl sm:w-full">
+      <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+        <div class="sm:flex sm:items-start">
+          <div class="w-full">
+            <h3 class="text-lg leading-6 font-medium text-gray-900" id="detailsModalTitle">
+              Test Case Details
+            </h3>
+            <div class="mt-4" id="detailsModalContent">
+              <!-- Content will be populated by JavaScript -->
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+        <button type="button" onclick="closeDetailsModal()" class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:w-auto sm:text-sm">
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function openCreateModal() {
+    document.getElementById('createTestCaseModal').classList.remove('hidden');
+  }
+
+  function closeCreateModal() {
+    document.getElementById('createTestCaseModal').classList.add('hidden');
+  }
+
+  function closeDetailsModal() {
+    document.getElementById('testCaseDetailsModal').classList.add('hidden');
+  }
+
+  async function showTestCaseDetails(testCaseId) {
+    try {
+      const response = await fetch(`/test_cases/${testCaseId}.json`);
+      const testCase = await response.json();
+      
+      const modal = document.getElementById('testCaseDetailsModal');
+      const title = document.getElementById('detailsModalTitle');
+      const content = document.getElementById('detailsModalContent');
+      
+      title.textContent = testCase.title;
+      
+      const statusColor = getStatusColor(testCase.status);
+      const priorityColor = getPriorityColor(testCase.priority);
+      
+      content.innerHTML = `
+        <div class="space-y-4">
+          <div class="flex space-x-4">
+            <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full ${priorityColor}">
+              ${testCase.priority} Priority
+            </span>
+            <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full ${statusColor}">
+              ${testCase.status}
+            </span>
+          </div>
+          
+          <div>
+            <h4 class="text-sm font-medium text-gray-900">Description</h4>
+            <p class="mt-1 text-sm text-gray-600">${testCase.description || 'No description provided'}</p>
+          </div>
+          
+          ${testCase.steps ? `
+            <div>
+              <h4 class="text-sm font-medium text-gray-900">Test Steps</h4>
+              <div class="mt-1 text-sm text-gray-600 whitespace-pre-line">${testCase.steps}</div>
+            </div>
+          ` : ''}
+          
+          <div class="grid grid-cols-2 gap-4 text-sm">
+            <div>
+              <span class="font-medium text-gray-900">Created:</span>
+              <span class="text-gray-600">${new Date(testCase.created_at).toLocaleDateString()}</span>
+            </div>
+            <div>
+              <span class="font-medium text-gray-900">Updated:</span>
+              <span class="text-gray-600">${new Date(testCase.updated_at).toLocaleDateString()}</span>
+            </div>
+          </div>
+          
+          <div class="flex space-x-3 pt-4 border-t border-gray-200">
+            <a href="/test_cases/${testCase.id}" class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+              View Full Details
+            </a>
+            <a href="/test_cases/${testCase.id}/edit" class="inline-flex items-center px-3 py-2 border border-gray-300 text-sm leading-4 font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+              Edit
+            </a>
+          </div>
+        </div>
+      `;
+      
+      modal.classList.remove('hidden');
+    } catch (error) {
+      console.error('Error fetching test case details:', error);
+    }
+  }
+
+  function getStatusColor(status) {
+    switch(status) {
+      case 'Active': return 'bg-green-100 text-green-800';
+      case 'Inactive': return 'bg-gray-100 text-gray-800';
+      case 'Draft': return 'bg-yellow-100 text-yellow-800';
+      default: return 'bg-gray-100 text-gray-800';
+    }
+  }
+
+  function getPriorityColor(priority) {
+    switch(priority) {
+      case 'Critical': return 'bg-red-100 text-red-800';
+      case 'High': return 'bg-orange-100 text-orange-800';
+      case 'Medium': return 'bg-yellow-100 text-yellow-800';
+      case 'Low': return 'bg-green-100 text-green-800';
+      default: return 'bg-gray-100 text-gray-800';
+    }
+  }
+</script>
