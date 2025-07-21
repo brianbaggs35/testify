@@ -1,0 +1,91 @@
+<div class="px-4 py-6 sm:px-0">
+  <div class="sm:flex sm:items-center">
+    <div class="sm:flex-auto">
+      <h1 class="text-3xl font-bold text-gray-900">JUnit Test Results</h1>
+      <p class="mt-2 text-sm text-gray-700">Upload and analyze JUnit XML test results</p>
+    </div>
+    <div class="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
+      <%= link_to "Upload JUnit XML", new_junit_upload_path, 
+            class: "bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-md text-sm font-medium" %>
+    </div>
+  </div>
+
+  <div class="mt-8 flow-root">
+    <% if @junit_uploads.any? %>
+      <div class="space-y-6">
+        <% @junit_uploads.each do |upload| %>
+          <div class="bg-white overflow-hidden shadow rounded-lg">
+            <div class="px-4 py-5 sm:p-6">
+              <div class="flex items-center justify-between">
+                <div class="flex-1 min-w-0">
+                  <h3 class="text-lg font-medium text-gray-900">
+                    <%= link_to upload.filename, upload, class: "hover:text-indigo-600" %>
+                  </h3>
+                  <p class="mt-1 text-sm text-gray-500">
+                    Size: <%= upload.file_size_human %> • 
+                    Uploaded: <%= upload.uploaded_at.strftime("%b %d, %Y at %I:%M %p") %>
+                  </p>
+                  <div class="mt-2 flex items-center space-x-4">
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
+                      <%= case upload.status
+                          when 'Parsed' then 'bg-green-100 text-green-800'
+                          when 'Error' then 'bg-red-100 text-red-800'
+                          else 'bg-yellow-100 text-yellow-800'
+                          end %>">
+                      <%= upload.status %>
+                    </span>
+                    <% if upload.status == 'Parsed' %>
+                      <span class="text-sm text-gray-500">
+                        <%= upload.total_count %> tests
+                      </span>
+                    <% end %>
+                  </div>
+                </div>
+                <div class="flex items-center space-x-2">
+                  <%= link_to "View", upload, class: "text-indigo-600 hover:text-indigo-900 text-sm" %>
+                  <%= link_to "Delete", upload, method: :delete, 
+                        confirm: "Are you sure?", 
+                        class: "text-red-600 hover:text-red-900 text-sm" %>
+                </div>
+              </div>
+              
+              <% if upload.status == 'Parsed' && upload.total_count > 0 %>
+                <!-- Test Results Summary -->
+                <div class="mt-4 grid grid-cols-2 md:grid-cols-4 gap-4">
+                  <div class="text-center">
+                    <div class="text-lg font-bold text-green-600"><%= upload.passed_count %></div>
+                    <div class="text-xs text-gray-500">Passed</div>
+                  </div>
+                  <div class="text-center">
+                    <div class="text-lg font-bold text-red-600"><%= upload.failed_count %></div>
+                    <div class="text-xs text-gray-500">Failed</div>
+                  </div>
+                  <div class="text-center">
+                    <div class="text-lg font-bold text-yellow-600"><%= upload.error_count %></div>
+                    <div class="text-xs text-gray-500">Error</div>
+                  </div>
+                  <div class="text-center">
+                    <div class="text-lg font-bold text-gray-600"><%= upload.skipped_count %></div>
+                    <div class="text-xs text-gray-500">Skipped</div>
+                  </div>
+                </div>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    <% else %>
+      <div class="text-center py-12">
+        <div class="text-gray-400 mb-4">
+          <svg class="mx-auto h-24 w-24" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+          </svg>
+        </div>
+        <h3 class="text-lg font-medium text-gray-900 mb-2">No JUnit uploads yet</h3>
+        <p class="text-gray-500 mb-6">Upload JUnit XML files to analyze your automated test results.</p>
+        <%= link_to "Upload JUnit XML", new_junit_upload_path, 
+              class: "bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-md text-sm font-medium" %>
+      </div>
+    <% end %>
+  </div>
+</div>

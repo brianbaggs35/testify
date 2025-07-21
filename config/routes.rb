@@ -1,9 +1,20 @@
 Rails.application.routes.draw do
-  get "dashboard/index"
   root "dashboard#index"
 
   get "dashboard", to: "dashboard#index"
   resources :test_cases
+  resources :test_suites do
+    member do
+      post :add_test_case
+      delete :remove_test_case
+    end
+  end
+  resources :test_runs do
+    member do
+      patch :execute_test
+    end
+  end
+  resources :junit_uploads, except: [ :edit, :update ]
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
   # Can be used by load balancers and uptime monitors to verify that the app is live.

@@ -1,0 +1,82 @@
+<div class="px-4 py-6 sm:px-0">
+  <div class="sm:flex sm:items-center">
+    <div class="sm:flex-auto">
+      <h1 class="text-3xl font-bold text-gray-900">Test Runs</h1>
+      <p class="mt-2 text-sm text-gray-700">Execute and track test suite progress</p>
+    </div>
+    <div class="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
+      <%= link_to "Create Test Run", new_test_run_path, 
+            class: "bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-md text-sm font-medium" %>
+    </div>
+  </div>
+
+  <div class="mt-8 flow-root">
+    <% if @test_runs.any? %>
+      <div class="space-y-6">
+        <% @test_runs.each do |test_run| %>
+          <div class="bg-white overflow-hidden shadow rounded-lg">
+            <div class="px-4 py-5 sm:p-6">
+              <div class="flex items-center justify-between">
+                <div class="flex-1 min-w-0">
+                  <h3 class="text-lg font-medium text-gray-900">
+                    <%= link_to test_run.name, test_run, class: "hover:text-indigo-600" %>
+                  </h3>
+                  <p class="mt-1 text-sm text-gray-500">
+                    Suite: <%= test_run.test_suite.name %>
+                  </p>
+                  <div class="mt-2 flex items-center space-x-4">
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
+                      <%= case test_run.status
+                          when 'Completed' then 'bg-green-100 text-green-800'
+                          when 'In_Progress' then 'bg-yellow-100 text-yellow-800'
+                          else 'bg-gray-100 text-gray-800'
+                          end %>">
+                      <%= test_run.status.humanize %>
+                    </span>
+                    <span class="text-sm text-gray-500">
+                      Pass Rate: <%= test_run.pass_rate %>%
+                    </span>
+                    <span class="text-sm text-gray-500">
+                      Progress: <%= test_run.progress_percentage %>%
+                    </span>
+                  </div>
+                </div>
+                <div class="flex items-center space-x-2">
+                  <%= link_to "View", test_run, class: "text-indigo-600 hover:text-indigo-900 text-sm" %>
+                  <%= link_to "Edit", edit_test_run_path(test_run), class: "text-gray-600 hover:text-gray-900 text-sm" %>
+                  <%= link_to "Delete", test_run, method: :delete, 
+                        confirm: "Are you sure?", 
+                        class: "text-red-600 hover:text-red-900 text-sm" %>
+                </div>
+              </div>
+              
+              <!-- Progress Bar -->
+              <div class="mt-4">
+                <div class="bg-gray-200 rounded-full h-2">
+                  <div class="bg-green-600 h-2 rounded-full" style="width: <%= test_run.pass_rate %>%"></div>
+                </div>
+                <div class="mt-1 flex justify-between text-xs text-gray-500">
+                  <span><%= test_run.passed_count %> passed</span>
+                  <span><%= test_run.failed_count %> failed</span>
+                  <span><%= test_run.pending_count %> pending</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    <% else %>
+      <div class="text-center py-12">
+        <div class="text-gray-400 mb-4">
+          <svg class="mx-auto h-24 w-24" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+          </svg>
+        </div>
+        <h3 class="text-lg font-medium text-gray-900 mb-2">No test runs yet</h3>
+        <p class="text-gray-500 mb-6">Create a test run to start executing your test suites.</p>
+        <%= link_to "Create Test Run", new_test_run_path, 
+              class: "bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-md text-sm font-medium" %>
+      </div>
+    <% end %>
+  </div>
+</div>

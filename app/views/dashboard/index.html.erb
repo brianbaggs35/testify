@@ -4,8 +4,9 @@
     
     <p class="text-gray-600 mb-8">Welcome to the QA Testing Platform</p>
     
-    <!-- Statistics Cards -->
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+    <!-- Main Statistics Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+      <!-- Test Cases -->
       <div class="bg-white overflow-hidden shadow rounded-lg">
         <div class="p-5">
           <div class="flex items-center">
@@ -24,24 +25,45 @@
         </div>
       </div>
 
+      <!-- Test Suites -->
       <div class="bg-white overflow-hidden shadow rounded-lg">
         <div class="p-5">
           <div class="flex items-center">
             <div class="flex-shrink-0">
               <div class="w-8 h-8 bg-green-500 rounded-md flex items-center justify-center">
-                <span class="text-white font-bold">AC</span>
+                <span class="text-white font-bold">TS</span>
               </div>
             </div>
             <div class="ml-5 w-0 flex-1">
               <dl>
-                <dt class="text-sm font-medium text-gray-500 truncate">Active Test Cases</dt>
-                <dd class="text-lg font-medium text-gray-900"><%= @active_test_cases %></dd>
+                <dt class="text-sm font-medium text-gray-500 truncate">Test Suites</dt>
+                <dd class="text-lg font-medium text-gray-900"><%= @total_test_suites %></dd>
               </dl>
             </div>
           </div>
         </div>
       </div>
 
+      <!-- Test Runs -->
+      <div class="bg-white overflow-hidden shadow rounded-lg">
+        <div class="p-5">
+          <div class="flex items-center">
+            <div class="flex-shrink-0">
+              <div class="w-8 h-8 bg-blue-500 rounded-md flex items-center justify-center">
+                <span class="text-white font-bold">TR</span>
+              </div>
+            </div>
+            <div class="ml-5 w-0 flex-1">
+              <dl>
+                <dt class="text-sm font-medium text-gray-500 truncate">Test Runs</dt>
+                <dd class="text-lg font-medium text-gray-900"><%= @total_test_runs %></dd>
+              </dl>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pass Rate -->
       <div class="bg-white overflow-hidden shadow rounded-lg">
         <div class="p-5">
           <div class="flex items-center">
@@ -52,9 +74,52 @@
             </div>
             <div class="ml-5 w-0 flex-1">
               <dl>
-                <dt class="text-sm font-medium text-gray-500 truncate">Coverage</dt>
-                <dd class="text-lg font-medium text-gray-900"><%= @total_test_cases > 0 ? (@active_test_cases.to_f / @total_test_cases * 100).round(1) : 0 %>%</dd>
+                <dt class="text-sm font-medium text-gray-500 truncate">Pass Rate</dt>
+                <dd class="text-lg font-medium text-gray-900"><%= @overall_pass_rate %>%</dd>
               </dl>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Test Execution Statistics -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+      <div class="bg-white shadow rounded-lg">
+        <div class="px-4 py-5 sm:p-6">
+          <h3 class="text-lg leading-6 font-medium text-gray-900 mb-4">Test Execution Status</h3>
+          <div class="grid grid-cols-2 gap-4">
+            <div class="text-center">
+              <div class="text-2xl font-bold text-green-600"><%= @passed_tests %></div>
+              <div class="text-sm text-gray-500">Passed</div>
+            </div>
+            <div class="text-center">
+              <div class="text-2xl font-bold text-red-600"><%= @failed_tests %></div>
+              <div class="text-sm text-gray-500">Failed</div>
+            </div>
+            <div class="text-center">
+              <div class="text-2xl font-bold text-yellow-600"><%= @pending_tests %></div>
+              <div class="text-sm text-gray-500">Pending</div>
+            </div>
+            <div class="text-center">
+              <div class="text-2xl font-bold text-blue-600"><%= @active_test_runs %></div>
+              <div class="text-sm text-gray-500">Active Runs</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-white shadow rounded-lg">
+        <div class="px-4 py-5 sm:p-6">
+          <h3 class="text-lg leading-6 font-medium text-gray-900 mb-4">Automated Testing</h3>
+          <div class="grid grid-cols-2 gap-4">
+            <div class="text-center">
+              <div class="text-2xl font-bold text-purple-600"><%= @total_junit_uploads %></div>
+              <div class="text-sm text-gray-500">JUnit Uploads</div>
+            </div>
+            <div class="text-center">
+              <div class="text-2xl font-bold text-green-600"><%= @parsed_junit_uploads %></div>
+              <div class="text-sm text-gray-500">Parsed</div>
             </div>
           </div>
         </div>
@@ -76,6 +141,65 @@
       </div>
     </div>
 
+    <!-- Recent Activity -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+      <div class="bg-white shadow rounded-lg">
+        <div class="px-4 py-5 sm:p-6">
+          <h3 class="text-lg leading-6 font-medium text-gray-900 mb-4">Recent Test Runs</h3>
+          <% if @recent_test_runs.any? %>
+            <div class="space-y-3">
+              <% @recent_test_runs.each do |test_run| %>
+                <div class="flex items-center justify-between">
+                  <div>
+                    <div class="text-sm font-medium text-gray-900"><%= test_run.name %></div>
+                    <div class="text-sm text-gray-500"><%= test_run.test_suite.name %></div>
+                  </div>
+                  <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
+                    <%= case test_run.status
+                        when 'Completed' then 'bg-green-100 text-green-800'
+                        when 'In_Progress' then 'bg-yellow-100 text-yellow-800'
+                        else 'bg-gray-100 text-gray-800'
+                        end %>">
+                    <%= test_run.status.humanize %>
+                  </span>
+                </div>
+              <% end %>
+            </div>
+          <% else %>
+            <p class="text-gray-500 text-sm">No test runs yet.</p>
+          <% end %>
+        </div>
+      </div>
+
+      <div class="bg-white shadow rounded-lg">
+        <div class="px-4 py-5 sm:p-6">
+          <h3 class="text-lg leading-6 font-medium text-gray-900 mb-4">Recent JUnit Uploads</h3>
+          <% if @recent_junit_uploads.any? %>
+            <div class="space-y-3">
+              <% @recent_junit_uploads.each do |upload| %>
+                <div class="flex items-center justify-between">
+                  <div>
+                    <div class="text-sm font-medium text-gray-900"><%= upload.filename %></div>
+                    <div class="text-sm text-gray-500"><%= upload.file_size_human %></div>
+                  </div>
+                  <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
+                    <%= case upload.status
+                        when 'Parsed' then 'bg-green-100 text-green-800'
+                        when 'Error' then 'bg-red-100 text-red-800'
+                        else 'bg-yellow-100 text-yellow-800'
+                        end %>">
+                    <%= upload.status %>
+                  </span>
+                </div>
+              <% end %>
+            </div>
+          <% else %>
+            <p class="text-gray-500 text-sm">No JUnit uploads yet.</p>
+          <% end %>
+        </div>
+      </div>
+    </div>
+
     <!-- Quick Actions -->
     <div class="bg-white shadow rounded-lg">
       <div class="px-4 py-5 sm:p-6">
@@ -83,8 +207,12 @@
         <div class="flex flex-wrap gap-4">
           <%= link_to "Create Test Case", new_test_case_path, 
                 class: "bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-md text-sm font-medium" %>
-          <%= link_to "View All Test Cases", test_cases_path, 
-                class: "bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-md text-sm font-medium" %>
+          <%= link_to "Create Test Suite", new_test_suite_path, 
+                class: "bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md text-sm font-medium" %>
+          <%= link_to "Create Test Run", new_test_run_path, 
+                class: "bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium" %>
+          <%= link_to "Upload JUnit", new_junit_upload_path, 
+                class: "bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-md text-sm font-medium" %>
         </div>
       </div>
     </div>

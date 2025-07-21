@@ -1,0 +1,119 @@
+<div class="px-4 py-6 sm:px-0">
+  <div class="sm:flex sm:items-center">
+    <div class="sm:flex-auto">
+      <div class="flex items-center space-x-4">
+        <%= link_to test_suites_path, class: "text-gray-500 hover:text-gray-700" do %>
+          <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+          </svg>
+        <% end %>
+        <h1 class="text-3xl font-bold text-gray-900"><%= @test_suite.name %></h1>
+      </div>
+      <p class="mt-2 text-sm text-gray-700"><%= @test_suite.description %></p>
+    </div>
+    <div class="mt-4 sm:mt-0 sm:ml-16 sm:flex-none space-x-2">
+      <%= link_to "Edit Suite", edit_test_suite_path(@test_suite), 
+            class: "bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-md text-sm font-medium" %>
+      <%= link_to "Create Test Run", new_test_run_path(test_suite_id: @test_suite.id), 
+            class: "bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md text-sm font-medium" %>
+    </div>
+  </div>
+
+  <!-- Test Cases in Suite -->
+  <div class="mt-8">
+    <div class="sm:flex sm:items-center">
+      <div class="sm:flex-auto">
+        <h3 class="text-lg leading-6 font-medium text-gray-900">Test Cases in Suite</h3>
+        <p class="mt-1 text-sm text-gray-500">
+          <%= pluralize(@test_cases.count, 'test case') %> in this suite
+        </p>
+      </div>
+    </div>
+
+    <% if @test_cases.any? %>
+      <div class="mt-4 bg-white shadow overflow-hidden sm:rounded-md">
+        <ul role="list" class="divide-y divide-gray-200">
+          <% @test_cases.each do |test_case| %>
+            <li class="px-6 py-4">
+              <div class="flex items-center justify-between">
+                <div class="flex-1 min-w-0">
+                  <div class="flex items-center space-x-3">
+                    <p class="text-sm font-medium text-gray-900 truncate">
+                      <%= link_to test_case.title, test_case, class: "hover:text-indigo-600" %>
+                    </p>
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
+                      <%= case test_case.priority
+                          when 'Critical' then 'bg-red-100 text-red-800'
+                          when 'High' then 'bg-orange-100 text-orange-800'
+                          when 'Medium' then 'bg-yellow-100 text-yellow-800'
+                          when 'Low' then 'bg-green-100 text-green-800'
+                          end %>">
+                      <%= test_case.priority %>
+                    </span>
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                      <%= test_case.status %>
+                    </span>
+                  </div>
+                  <p class="mt-1 text-sm text-gray-500 truncate">
+                    <%= test_case.description %>
+                  </p>
+                </div>
+                <div class="flex-shrink-0">
+                  <%= link_to "Remove", remove_test_case_test_suite_path(@test_suite, test_case_id: test_case.id), 
+                        method: :delete, 
+                        confirm: "Remove this test case from the suite?",
+                        class: "text-red-600 hover:text-red-900 text-sm" %>
+                </div>
+              </div>
+            </li>
+          <% end %>
+        </ul>
+      </div>
+    <% else %>
+      <div class="mt-4 text-center py-8 bg-white shadow rounded-lg">
+        <p class="text-gray-500">No test cases in this suite yet.</p>
+      </div>
+    <% end %>
+  </div>
+
+  <!-- Add Test Cases -->
+  <% if @available_test_cases.any? %>
+    <div class="mt-8">
+      <div class="bg-white shadow rounded-lg">
+        <div class="px-4 py-5 sm:p-6">
+          <h3 class="text-lg leading-6 font-medium text-gray-900 mb-4">Add Test Cases to Suite</h3>
+          
+          <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            <% @available_test_cases.each do |test_case| %>
+              <div class="bg-gray-50 rounded-lg p-4">
+                <div class="flex items-center justify-between">
+                  <div class="flex-1 min-w-0">
+                    <p class="text-sm font-medium text-gray-900 truncate">
+                      <%= test_case.title %>
+                    </p>
+                    <div class="mt-1 flex items-center space-x-2">
+                      <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium
+                        <%= case test_case.priority
+                            when 'Critical' then 'bg-red-100 text-red-800'
+                            when 'High' then 'bg-orange-100 text-orange-800'
+                            when 'Medium' then 'bg-yellow-100 text-yellow-800'
+                            when 'Low' then 'bg-green-100 text-green-800'
+                            end %>">
+                        <%= test_case.priority %>
+                      </span>
+                    </div>
+                  </div>
+                  <div class="ml-2">
+                    <%= link_to "Add", add_test_case_test_suite_path(@test_suite, test_case_id: test_case.id), 
+                          method: :post,
+                          class: "bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-1 rounded text-sm" %>
+                  </div>
+                </div>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>
