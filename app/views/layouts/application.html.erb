@@ -25,17 +25,17 @@
 
   <body class="bg-gray-50 h-screen flex">
     <!-- Sidebar -->
-    <div id="sidebar" class="bg-white shadow-lg h-full w-64 fixed inset-y-0 left-0 z-30 transform -translate-x-full transition-transform duration-300 lg:translate-x-0 lg:static lg:inset-0">
-      <div class="flex items-center justify-center h-16 bg-indigo-600">
-        <%= link_to root_path, class: "text-xl font-bold text-white" do %>
+    <div id="sidebar" class="bg-white shadow-2xl h-full w-64 fixed inset-y-0 left-0 z-40 transform -translate-x-full transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:inset-0 border-r border-gray-200">
+      <div class="flex items-center justify-center h-16 bg-gradient-to-r from-indigo-600 to-indigo-700 shadow-lg">
+        <%= link_to root_path, class: "text-2xl font-bold text-white hover:text-indigo-100 transition-colors duration-200" do %>
           Testify
         <% end %>
       </div>
       
-      <nav class="mt-5 px-2">
+      <nav class="mt-6 px-4 space-y-2">
         <!-- Dashboard -->
         <%= link_to dashboard_path, 
-              class: "#{current_page?(dashboard_path) ? 'bg-indigo-100 text-indigo-700' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'} group flex items-center px-2 py-2 text-sm font-medium rounded-md mb-1" do %>
+              class: "#{current_page?(dashboard_path) ? 'bg-gradient-to-r from-indigo-500 to-indigo-600 text-white shadow-lg' : 'text-gray-600 hover:bg-gradient-to-r hover:from-gray-100 hover:to-gray-200 hover:text-gray-900'} group flex items-center px-4 py-3 text-sm font-semibold rounded-xl mb-2 transition-all duration-200 transform hover:scale-[1.02]" do %>
           <svg class="mr-3 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z" />
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5a2 2 0 012-2h4a2 2 0 012 2v4H8V5z" />
@@ -45,12 +45,12 @@
         
         <!-- Automated Testing Section -->
         <div class="mt-8">
-          <h3 class="px-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">
+          <h3 class="px-4 text-xs font-bold text-gray-500 uppercase tracking-wider mb-3">
             Automated Testing
           </h3>
-          <div class="mt-1 space-y-1">
+          <div class="space-y-1">
             <%= link_to new_junit_upload_path, 
-                  class: "#{current_page?(new_junit_upload_path) ? 'bg-indigo-100 text-indigo-700' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'} group flex items-center px-3 py-2 text-sm font-medium rounded-md" do %>
+                  class: "#{current_page?(new_junit_upload_path) ? 'bg-gradient-to-r from-purple-500 to-purple-600 text-white shadow-lg' : 'text-gray-600 hover:bg-gradient-to-r hover:from-purple-50 hover:to-purple-100 hover:text-purple-700'} group flex items-center px-4 py-3 text-sm font-semibold rounded-xl transition-all duration-200 transform hover:scale-[1.02]" do %>
               <svg class="mr-3 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
               </svg>
@@ -58,7 +58,7 @@
             <% end %>
             
             <%= link_to junit_uploads_path, 
-                  class: "#{current_page?(junit_uploads_path) ? 'bg-indigo-100 text-indigo-700' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'} group flex items-center px-3 py-2 text-sm font-medium rounded-md" do %>
+                  class: "#{current_page?(junit_uploads_path) ? 'bg-gradient-to-r from-purple-500 to-purple-600 text-white shadow-lg' : 'text-gray-600 hover:bg-gradient-to-r hover:from-purple-50 hover:to-purple-100 hover:text-purple-700'} group flex items-center px-4 py-3 text-sm font-semibold rounded-xl transition-all duration-200 transform hover:scale-[1.02]" do %>
               <svg class="mr-3 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2-2V7a2 2 0 012-2h2a2 2 0 002 2v2a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 00-2 2h-2a2 2 0 00-2 2v6a2 2 0 01-2 2H9z" />
               </svg>
@@ -66,7 +66,7 @@
             <% end %>
             
             <%= link_to automated_reports_path, 
-                  class: "#{current_page?(automated_reports_path) ? 'bg-indigo-100 text-indigo-700' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'} group flex items-center px-3 py-2 text-sm font-medium rounded-md" do %>
+                  class: "#{current_page?(automated_reports_path) ? 'bg-gradient-to-r from-purple-500 to-purple-600 text-white shadow-lg' : 'text-gray-600 hover:bg-gradient-to-r hover:from-purple-50 hover:to-purple-100 hover:text-purple-700'} group flex items-center px-4 py-3 text-sm font-semibold rounded-xl transition-all duration-200 transform hover:scale-[1.02]" do %>
               <svg class="mr-3 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
               </svg>
@@ -77,12 +77,12 @@
         
         <!-- Manual Testing Section -->
         <div class="mt-8">
-          <h3 class="px-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">
+          <h3 class="px-4 text-xs font-bold text-gray-500 uppercase tracking-wider mb-3">
             Manual Testing
           </h3>
-          <div class="mt-1 space-y-1">
+          <div class="space-y-1">
             <%= link_to test_cases_path, 
-                  class: "#{current_page?(test_cases_path) ? 'bg-indigo-100 text-indigo-700' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'} group flex items-center px-3 py-2 text-sm font-medium rounded-md" do %>
+                  class: "#{current_page?(test_cases_path) ? 'bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-lg' : 'text-gray-600 hover:bg-gradient-to-r hover:from-blue-50 hover:to-blue-100 hover:text-blue-700'} group flex items-center px-4 py-3 text-sm font-semibold rounded-xl transition-all duration-200 transform hover:scale-[1.02]" do %>
               <svg class="mr-3 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
               </svg>
@@ -90,7 +90,7 @@
             <% end %>
             
             <%= link_to test_suites_path, 
-                  class: "#{current_page?(test_suites_path) ? 'bg-indigo-100 text-indigo-700' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'} group flex items-center px-3 py-2 text-sm font-medium rounded-md" do %>
+                  class: "#{current_page?(test_suites_path) ? 'bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-lg' : 'text-gray-600 hover:bg-gradient-to-r hover:from-blue-50 hover:to-blue-100 hover:text-blue-700'} group flex items-center px-4 py-3 text-sm font-semibold rounded-xl transition-all duration-200 transform hover:scale-[1.02]" do %>
               <svg class="mr-3 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
               </svg>
@@ -98,7 +98,7 @@
             <% end %>
             
             <%= link_to test_runs_path, 
-                  class: "#{current_page?(test_runs_path) ? 'bg-indigo-100 text-indigo-700' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'} group flex items-center px-3 py-2 text-sm font-medium rounded-md" do %>
+                  class: "#{current_page?(test_runs_path) ? 'bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-lg' : 'text-gray-600 hover:bg-gradient-to-r hover:from-blue-50 hover:to-blue-100 hover:text-blue-700'} group flex items-center px-4 py-3 text-sm font-semibold rounded-xl transition-all duration-200 transform hover:scale-[1.02]" do %>
               <svg class="mr-3 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h1m4 0h1m-6 4h1m4 0h1m6-10V7a3 3 0 11-6 0V4h6zM4 20h16" />
               </svg>
@@ -106,7 +106,7 @@
             <% end %>
             
             <%= link_to manual_reports_path, 
-                  class: "#{current_page?(manual_reports_path) ? 'bg-indigo-100 text-indigo-700' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'} group flex items-center px-3 py-2 text-sm font-medium rounded-md" do %>
+                  class: "#{current_page?(manual_reports_path) ? 'bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-lg' : 'text-gray-600 hover:bg-gradient-to-r hover:from-blue-50 hover:to-blue-100 hover:text-blue-700'} group flex items-center px-4 py-3 text-sm font-semibold rounded-xl transition-all duration-200 transform hover:scale-[1.02]" do %>
               <svg class="mr-3 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
               </svg>
@@ -118,8 +118,8 @@
     </div>
 
     <!-- Mobile menu button -->
-    <div class="lg:hidden">
-      <button type="button" class="bg-indigo-600 inline-flex items-center justify-center p-2 rounded-md text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white" onclick="toggleSidebar()">
+    <div class="lg:hidden fixed top-4 left-4 z-50">
+      <button type="button" class="bg-gradient-to-r from-indigo-500 to-indigo-600 hover:from-indigo-600 hover:to-indigo-700 inline-flex items-center justify-center p-3 rounded-xl text-white shadow-lg transform hover:scale-105 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white" onclick="toggleSidebar()">
         <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
         </svg>
@@ -129,13 +129,13 @@
     <!-- Main content -->
     <div class="lg:pl-64 flex flex-col flex-1 overflow-hidden">
       <!-- Top bar -->
-      <div class="relative z-10 flex-shrink-0 flex h-16 bg-white shadow-sm border-b border-gray-200">
+      <div class="relative z-10 flex-shrink-0 flex h-16 bg-white shadow-lg border-b border-gray-200">
         <div class="flex-1 flex justify-between px-4 sm:px-6">
-          <div class="flex-1 flex">
+          <div class="flex-1 flex lg:ml-16">
             <%= form_with url: search_path, method: :get, local: true, class: "w-full flex md:ml-0" do |form| %>
               <label for="search" class="sr-only">Search</label>
               <div class="relative w-full text-gray-400 focus-within:text-gray-600">
-                <div class="absolute inset-y-0 left-0 flex items-center pointer-events-none">
+                <div class="absolute inset-y-0 left-0 flex items-center pointer-events-none pl-3">
                   <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                     <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
                   </svg>
@@ -143,27 +143,29 @@
                 <%= form.text_field :q, 
                       id: "search",
                       name: "q",
-                      class: "block w-full h-full pl-8 pr-3 py-2 border-transparent text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent focus:placeholder-gray-400 sm:text-sm rounded-md",
+                      class: "block w-full h-full pl-10 pr-3 py-2 border-transparent text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent focus:placeholder-gray-400 sm:text-sm rounded-lg transition-all duration-200",
                       placeholder: "Search test cases, suites, uploads...",
                       autocomplete: "off" %>
               </div>
             <% end %>
           </div>
-          <div class="ml-2 flex items-center space-x-4 sm:ml-6 sm:space-x-6">
+          <div class="ml-2 flex items-center space-x-2 sm:ml-6 sm:space-x-4">
             <!-- Quick actions -->
             <%= link_to new_test_case_path, 
-                  class: "bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-2 rounded-md text-sm font-medium", 
+                  class: "hidden sm:inline-flex bg-gradient-to-r from-indigo-500 to-indigo-600 hover:from-indigo-600 hover:to-indigo-700 text-white px-4 py-2 rounded-xl text-sm font-bold shadow-lg transform hover:scale-105 transition-all duration-200", 
                   title: "New Test Case" do %>
-              <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <svg class="h-4 w-4 mr-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
               </svg>
+              New Test
             <% end %>
             <%= link_to new_junit_upload_path, 
-                  class: "bg-green-600 hover:bg-green-700 text-white px-3 py-2 rounded-md text-sm font-medium",
+                  class: "hidden sm:inline-flex bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-600 hover:to-green-700 text-white px-4 py-2 rounded-xl text-sm font-bold shadow-lg transform hover:scale-105 transition-all duration-200",
                   title: "Upload JUnit" do %>
-              <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <svg class="h-4 w-4 mr-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
               </svg>
+              Upload
             <% end %>
           </div>
         </div>
@@ -200,6 +202,44 @@
         
         if (!isClickInsideSidebar && !isClickOnMenuButton && window.innerWidth < 1024) {
           sidebar.classList.add('-translate-x-full');
+        }
+      });
+
+      // Add overlay for mobile
+      function toggleSidebar() {
+        const sidebar = document.getElementById('sidebar');
+        const body = document.body;
+        const overlay = document.getElementById('sidebar-overlay');
+        
+        sidebar.classList.toggle('-translate-x-full');
+        
+        if (!sidebar.classList.contains('-translate-x-full')) {
+          // Create overlay if it doesn't exist
+          if (!overlay) {
+            const newOverlay = document.createElement('div');
+            newOverlay.id = 'sidebar-overlay';
+            newOverlay.className = 'fixed inset-0 bg-black bg-opacity-50 z-30 lg:hidden transition-opacity duration-300';
+            newOverlay.onclick = toggleSidebar;
+            body.appendChild(newOverlay);
+          }
+        } else {
+          // Remove overlay
+          if (overlay) {
+            overlay.remove();
+          }
+        }
+      }
+
+      // Handle window resize
+      window.addEventListener('resize', function() {
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('sidebar-overlay');
+        
+        if (window.innerWidth >= 1024) {
+          sidebar.classList.remove('-translate-x-full');
+          if (overlay) {
+            overlay.remove();
+          }
         }
       });
     </script>
