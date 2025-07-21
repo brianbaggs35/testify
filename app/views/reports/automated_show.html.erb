@@ -1,0 +1,149 @@
+<% content_for :title, "Automated Test Report Preview" %>
+
+<div class="sm:flex sm:items-center">
+  <div class="sm:flex-auto">
+    <h1 class="text-2xl font-semibold text-gray-900">Test Report Preview</h1>
+    <p class="mt-2 text-sm text-gray-700">Report for: <%= @junit_upload.filename %></p>
+  </div>
+  <div class="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
+    <%= link_to automated_report_pdf_path(@junit_upload), 
+          class: "inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" do %>
+      <svg class="-ml-0.5 mr-2 h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m0 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+      </svg>
+      Download PDF
+    <% end %>
+  </div>
+</div>
+
+<!-- Report Content Preview -->
+<div class="mt-8 bg-white shadow-sm border border-gray-200 rounded-lg">
+  <!-- Report Header -->
+  <div class="px-6 py-8 border-b border-gray-200 text-center">
+    <h2 class="text-3xl font-bold text-gray-900">Automated Test Report</h2>
+    <p class="mt-2 text-lg text-gray-600"><%= @junit_upload.filename %></p>
+    <p class="text-sm text-gray-500">Generated on <%= Time.current.strftime('%B %d, %Y at %I:%M %p') %></p>
+  </div>
+
+  <!-- Test Execution Summary -->
+  <div class="px-6 py-6">
+    <h3 class="text-xl font-semibold text-gray-900 mb-4">Test Execution Summary</h3>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div class="bg-blue-50 rounded-lg p-4">
+        <div class="text-2xl font-bold text-blue-900"><%= @total_tests %></div>
+        <div class="text-sm text-blue-700">Total Tests</div>
+      </div>
+      
+      <div class="bg-green-50 rounded-lg p-4">
+        <div class="text-2xl font-bold text-green-900"><%= @passed_tests %></div>
+        <div class="text-sm text-green-700">Passed (<%= (@passed_tests.to_f / @total_tests * 100).round(1) if @total_tests > 0 %>%)</div>
+      </div>
+      
+      <div class="bg-red-50 rounded-lg p-4">
+        <div class="text-2xl font-bold text-red-900"><%= @failed_tests + @error_tests %></div>
+        <div class="text-sm text-red-700">Failed/Error (<%= ((@failed_tests + @error_tests).to_f / @total_tests * 100).round(1) if @total_tests > 0 %>%)</div>
+      </div>
+      
+      <div class="bg-yellow-50 rounded-lg p-4">
+        <div class="text-2xl font-bold text-yellow-900"><%= @skipped_tests %></div>
+        <div class="text-sm text-yellow-700">Skipped (<%= (@skipped_tests.to_f / @total_tests * 100).round(1) if @total_tests > 0 %>%)</div>
+      </div>
+    </div>
+    
+    <div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div class="bg-gray-50 rounded-lg p-4">
+        <div class="text-lg font-semibold text-gray-900"><%= @total_execution_time %>s</div>
+        <div class="text-sm text-gray-700">Total Execution Time</div>
+      </div>
+      
+      <div class="bg-gray-50 rounded-lg p-4">
+        <div class="text-lg font-semibold text-gray-900 
+          <%= @pass_rate >= 90 ? 'text-green-600' : @pass_rate >= 70 ? 'text-yellow-600' : 'text-red-600' %>">
+          <%= @pass_rate %>%
+        </div>
+        <div class="text-sm text-gray-700">Pass Rate</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Charts Section -->
+  <div class="px-6 py-6 border-t border-gray-200">
+    <h3 class="text-xl font-semibold text-gray-900 mb-4">Test Results Visualization</h3>
+    
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <!-- Pie Chart -->
+      <div class="bg-gray-50 rounded-lg p-4">
+        <h4 class="text-lg font-medium text-gray-900 mb-2">Test Results Distribution</h4>
+        <%= pie_chart [
+          ["Passed", @passed_tests],
+          ["Failed", @failed_tests],
+          ["Error", @error_tests],
+          ["Skipped", @skipped_tests]
+        ], colors: ["#10B981", "#EF4444", "#F59E0B", "#6B7280"], height: "300px" %>
+      </div>
+      
+      <!-- Bar Chart by Class -->
+      <div class="bg-gray-50 rounded-lg p-4">
+        <h4 class="text-lg font-medium text-gray-900 mb-2">Results by Test Class</h4>
+        <% class_results = @junit_test_results.group(:class_name).group(:status).count %>
+        <% chart_data = {} %>
+        <% @junit_test_results.pluck(:class_name).uniq.each do |class_name| %>
+          <% chart_data[class_name] = {
+            "Passed" => class_results[[class_name, "passed"]] || 0,
+            "Failed" => class_results[[class_name, "failed"]] || 0,
+            "Error" => class_results[[class_name, "error"]] || 0,
+            "Skipped" => class_results[[class_name, "skipped"]] || 0
+          } %>
+        <% end %>
+        <%= column_chart chart_data, stacked: true, colors: ["#10B981", "#EF4444", "#F59E0B", "#6B7280"], height: "300px" %>
+      </div>
+    </div>
+  </div>
+
+  <!-- Failed/Error Tests Details -->
+  <% if @failed_tests > 0 || @error_tests > 0 %>
+    <div class="px-6 py-6 border-t border-gray-200">
+      <h3 class="text-xl font-semibold text-gray-900 mb-4">Failed and Error Tests</h3>
+      
+      <div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
+        <table class="min-w-full divide-y divide-gray-300">
+          <thead class="bg-gray-50">
+            <tr>
+              <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">Test Name</th>
+              <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Class</th>
+              <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Status</th>
+              <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Error Message</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-200 bg-white">
+            <% @junit_test_results.where(status: ['failed', 'error']).each do |test| %>
+              <tr>
+                <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
+                  <%= test.test_name %>
+                </td>
+                <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                  <%= test.class_name %>
+                </td>
+                <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                  <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full 
+                    <%= test.status == 'failed' ? 'bg-red-100 text-red-800' : 'bg-orange-100 text-orange-800' %>">
+                    <%= test.status.capitalize %>
+                  </span>
+                </td>
+                <td class="px-3 py-4 text-sm text-gray-500">
+                  <%= test.failure_message&.truncate(100) || "N/A" %>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  <% end %>
+</div>
+
+<% content_for :javascript do %>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://unpkg.com/chartkick@4"></script>
+<% end %>

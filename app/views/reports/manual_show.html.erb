@@ -1,0 +1,180 @@
+<% content_for :title, "Manual Test Report Preview" %>
+
+<div class="sm:flex sm:items-center">
+  <div class="sm:flex-auto">
+    <h1 class="text-2xl font-semibold text-gray-900">Test Suite Report Preview</h1>
+    <p class="mt-2 text-sm text-gray-700">Report for: <%= @test_suite.name %></p>
+  </div>
+  <div class="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
+    <%= link_to manual_report_pdf_path(@test_suite), 
+          class: "inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" do %>
+      <svg class="-ml-0.5 mr-2 h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m0 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+      </svg>
+      Download PDF
+    <% end %>
+  </div>
+</div>
+
+<!-- Report Content Preview -->
+<div class="mt-8 bg-white shadow-sm border border-gray-200 rounded-lg">
+  <!-- Report Header -->
+  <div class="px-6 py-8 border-b border-gray-200 text-center">
+    <h2 class="text-3xl font-bold text-gray-900">Manual Test Report</h2>
+    <p class="mt-2 text-lg text-gray-600"><%= @test_suite.name %></p>
+    <p class="text-sm text-gray-500">Generated on <%= Time.current.strftime('%B %d, %Y at %I:%M %p') %></p>
+  </div>
+
+  <!-- Test Suite Summary -->
+  <div class="px-6 py-6">
+    <h3 class="text-xl font-semibold text-gray-900 mb-4">Test Suite Summary</h3>
+    
+    <div class="bg-gray-50 rounded-lg p-6">
+      <dl class="grid grid-cols-1 gap-x-4 gap-y-6 sm:grid-cols-2">
+        <div>
+          <dt class="text-sm font-medium text-gray-500">Test Suite Name</dt>
+          <dd class="mt-1 text-sm text-gray-900"><%= @test_suite.name %></dd>
+        </div>
+        <div>
+          <dt class="text-sm font-medium text-gray-500">Description</dt>
+          <dd class="mt-1 text-sm text-gray-900"><%= @test_suite.description || "No description provided" %></dd>
+        </div>
+        <div>
+          <dt class="text-sm font-medium text-gray-500">Total Test Cases</dt>
+          <dd class="mt-1 text-sm text-gray-900"><%= @total_test_cases %></dd>
+        </div>
+        <div>
+          <dt class="text-sm font-medium text-gray-500">Total Test Runs</dt>
+          <dd class="mt-1 text-sm text-gray-900"><%= @total_test_runs %></dd>
+        </div>
+      </dl>
+    </div>
+
+    <% if @test_runs.any? %>
+      <div class="mt-6">
+        <h4 class="text-lg font-medium text-gray-900 mb-4">Latest Test Run Results</h4>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div class="bg-green-50 rounded-lg p-4">
+            <div class="text-2xl font-bold text-green-900"><%= @passed_in_latest %></div>
+            <div class="text-sm text-green-700">Passed</div>
+          </div>
+          
+          <div class="bg-red-50 rounded-lg p-4">
+            <div class="text-2xl font-bold text-red-900"><%= @failed_in_latest %></div>
+            <div class="text-sm text-red-700">Failed</div>
+          </div>
+          
+          <div class="bg-yellow-50 rounded-lg p-4">
+            <div class="text-2xl font-bold text-yellow-900"><%= @pending_in_latest %></div>
+            <div class="text-sm text-yellow-700">Pending</div>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+  <!-- Charts Section -->
+  <% if @test_runs.any? %>
+    <div class="px-6 py-6 border-t border-gray-200">
+      <h3 class="text-xl font-semibold text-gray-900 mb-4">Test Execution Trends</h3>
+      
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <!-- Test Results Distribution -->
+        <div class="bg-gray-50 rounded-lg p-4">
+          <h4 class="text-lg font-medium text-gray-900 mb-2">Latest Run Results</h4>
+          <% if @passed_in_latest + @failed_in_latest + @pending_in_latest > 0 %>
+            <%= pie_chart [
+              ["Passed", @passed_in_latest],
+              ["Failed", @failed_in_latest],
+              ["Pending", @pending_in_latest]
+            ], colors: ["#10B981", "#EF4444", "#F59E0B"], height: "300px" %>
+          <% else %>
+            <div class="flex items-center justify-center h-64 text-gray-500">
+              No test results available
+            </div>
+          <% end %>
+        </div>
+        
+        <!-- Test Runs Over Time -->
+        <div class="bg-gray-50 rounded-lg p-4">
+          <h4 class="text-lg font-medium text-gray-900 mb-2">Test Runs Over Time</h4>
+          <% run_data = @test_runs.group_by_day(:created_at).count %>
+          <% if run_data.any? %>
+            <%= line_chart run_data, height: "300px", colors: ["#6366F1"] %>
+          <% else %>
+            <div class="flex items-center justify-center h-64 text-gray-500">
+              No test run history available
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  <% end %>
+
+  <!-- Test Cases Details -->
+  <% if @test_cases.any? %>
+    <div class="px-6 py-6 border-t border-gray-200">
+      <h3 class="text-xl font-semibold text-gray-900 mb-4">Test Cases</h3>
+      
+      <div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
+        <table class="min-w-full divide-y divide-gray-300">
+          <thead class="bg-gray-50">
+            <tr>
+              <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">Title</th>
+              <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Priority</th>
+              <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Status</th>
+              <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Description</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-200 bg-white">
+            <% @test_cases.each do |test_case| %>
+              <tr>
+                <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
+                  <%= test_case.title %>
+                </td>
+                <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                  <% if test_case.priority %>
+                    <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full 
+                      <%= case test_case.priority
+                            when 'high' then 'bg-red-100 text-red-800'
+                            when 'medium' then 'bg-yellow-100 text-yellow-800'
+                            when 'low' then 'bg-green-100 text-green-800'
+                            else 'bg-gray-100 text-gray-800'
+                          end %>">
+                      <%= test_case.priority.capitalize %>
+                    </span>
+                  <% else %>
+                    N/A
+                  <% end %>
+                </td>
+                <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                  <% if test_case.status %>
+                    <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full 
+                      <%= case test_case.status
+                            when 'active' then 'bg-green-100 text-green-800'
+                            when 'inactive' then 'bg-gray-100 text-gray-800'
+                            when 'deprecated' then 'bg-red-100 text-red-800'
+                            else 'bg-blue-100 text-blue-800'
+                          end %>">
+                      <%= test_case.status.capitalize %>
+                    </span>
+                  <% else %>
+                    N/A
+                  <% end %>
+                </td>
+                <td class="px-3 py-4 text-sm text-gray-500">
+                  <%= test_case.description&.truncate(100) || "No description" %>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  <% end %>
+</div>
+
+<% content_for :javascript do %>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://unpkg.com/chartkick@4"></script>
+<% end %>
