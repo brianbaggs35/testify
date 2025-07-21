@@ -6,73 +6,81 @@
 </div>
 
 <!-- Quick Stats Overview -->
-<div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4 mb-8">
-  <div class="bg-white overflow-hidden shadow rounded-lg">
-    <div class="p-5">
+<div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4 mb-8">
+  <!-- Total Test Cases Card -->
+  <div class="group relative bg-gradient-to-br from-blue-50 to-indigo-100 hover:from-blue-100 hover:to-indigo-200 transform hover:scale-105 transition-all duration-300 rounded-xl shadow-lg hover:shadow-xl overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-br from-blue-400/10 to-indigo-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+    <div class="relative p-6">
       <div class="flex items-center">
-        <div class="flex-shrink-0">
-          <svg class="h-6 w-6 text-blue-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <div class="flex-shrink-0 p-3 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-lg shadow-lg">
+          <svg class="h-6 w-6 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
           </svg>
         </div>
-        <div class="ml-5 w-0 flex-1">
+        <div class="ml-5 flex-1">
           <dl>
-            <dt class="text-sm font-medium text-gray-500 truncate">Total Test Cases</dt>
-            <dd class="text-lg font-medium text-gray-900"><%= @total_test_cases %></dd>
+            <dt class="text-sm font-semibold text-gray-600 uppercase tracking-wider">Total Test Cases</dt>
+            <dd class="text-2xl font-bold text-gray-900 mt-1"><%= @total_test_cases %></dd>
           </dl>
         </div>
       </div>
     </div>
   </div>
 
-  <div class="bg-white overflow-hidden shadow rounded-lg">
-    <div class="p-5">
+  <!-- Test Suites Card -->
+  <div class="group relative bg-gradient-to-br from-emerald-50 to-green-100 hover:from-emerald-100 hover:to-green-200 transform hover:scale-105 transition-all duration-300 rounded-xl shadow-lg hover:shadow-xl overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-br from-emerald-400/10 to-green-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+    <div class="relative p-6">
       <div class="flex items-center">
-        <div class="flex-shrink-0">
-          <svg class="h-6 w-6 text-green-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <div class="flex-shrink-0 p-3 bg-gradient-to-br from-emerald-500 to-green-600 rounded-lg shadow-lg">
+          <svg class="h-6 w-6 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
           </svg>
         </div>
-        <div class="ml-5 w-0 flex-1">
+        <div class="ml-5 flex-1">
           <dl>
-            <dt class="text-sm font-medium text-gray-500 truncate">Test Suites</dt>
-            <dd class="text-lg font-medium text-gray-900"><%= @total_test_suites %></dd>
+            <dt class="text-sm font-semibold text-gray-600 uppercase tracking-wider">Test Suites</dt>
+            <dd class="text-2xl font-bold text-gray-900 mt-1"><%= @total_test_suites %></dd>
           </dl>
         </div>
       </div>
     </div>
   </div>
 
-  <div class="bg-white overflow-hidden shadow rounded-lg">
-    <div class="p-5">
+  <!-- JUnit Uploads Card -->
+  <div class="group relative bg-gradient-to-br from-purple-50 to-violet-100 hover:from-purple-100 hover:to-violet-200 transform hover:scale-105 transition-all duration-300 rounded-xl shadow-lg hover:shadow-xl overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-br from-purple-400/10 to-violet-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+    <div class="relative p-6">
       <div class="flex items-center">
-        <div class="flex-shrink-0">
-          <svg class="h-6 w-6 text-purple-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <div class="flex-shrink-0 p-3 bg-gradient-to-br from-purple-500 to-violet-600 rounded-lg shadow-lg">
+          <svg class="h-6 w-6 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
           </svg>
         </div>
-        <div class="ml-5 w-0 flex-1">
+        <div class="ml-5 flex-1">
           <dl>
-            <dt class="text-sm font-medium text-gray-500 truncate">JUnit Uploads</dt>
-            <dd class="text-lg font-medium text-gray-900"><%= @total_junit_uploads %></dd>
+            <dt class="text-sm font-semibold text-gray-600 uppercase tracking-wider">JUnit Uploads</dt>
+            <dd class="text-2xl font-bold text-gray-900 mt-1"><%= @total_junit_uploads %></dd>
           </dl>
         </div>
       </div>
     </div>
   </div>
 
-  <div class="bg-white overflow-hidden shadow rounded-lg">
-    <div class="p-5">
+  <!-- Total Tests Executed Card -->
+  <div class="group relative bg-gradient-to-br from-amber-50 to-orange-100 hover:from-amber-100 hover:to-orange-200 transform hover:scale-105 transition-all duration-300 rounded-xl shadow-lg hover:shadow-xl overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-br from-amber-400/10 to-orange-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+    <div class="relative p-6">
       <div class="flex items-center">
-        <div class="flex-shrink-0">
-          <svg class="h-6 w-6 text-indigo-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <div class="flex-shrink-0 p-3 bg-gradient-to-br from-amber-500 to-orange-600 rounded-lg shadow-lg">
+          <svg class="h-6 w-6 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
           </svg>
         </div>
-        <div class="ml-5 w-0 flex-1">
+        <div class="ml-5 flex-1">
           <dl>
-            <dt class="text-sm font-medium text-gray-500 truncate">Total Tests Executed</dt>
-            <dd class="text-lg font-medium text-gray-900"><%= @total_test_results + @total_automated_tests %></dd>
+            <dt class="text-sm font-semibold text-gray-600 uppercase tracking-wider">Total Tests Executed</dt>
+            <dd class="text-2xl font-bold text-gray-900 mt-1"><%= @total_test_results + @total_automated_tests %></dd>
           </dl>
         </div>
       </div>
@@ -83,64 +91,65 @@
 <!-- Manual vs Automated Testing Sections -->
 <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
   <!-- Manual Testing Section -->
-  <div class="bg-white shadow rounded-lg">
-    <div class="px-4 py-5 sm:p-6">
-      <div class="flex items-center justify-between mb-4">
-        <h3 class="text-lg leading-6 font-medium text-gray-900">Manual Testing</h3>
-        <%= link_to test_cases_path, class: "text-indigo-600 hover:text-indigo-900 text-sm" do %>
+  <div class="bg-white shadow-xl rounded-2xl border-0 overflow-hidden hover:shadow-2xl transition-all duration-300">
+    <div class="bg-gradient-to-r from-blue-500 to-indigo-600 px-6 py-4">
+      <div class="flex items-center justify-between">
+        <h3 class="text-xl font-bold text-white">Manual Testing</h3>
+        <%= link_to test_cases_path, class: "bg-white/20 hover:bg-white/30 text-white px-3 py-1 rounded-lg text-sm font-medium transition-all duration-200 backdrop-blur-sm" do %>
           View All →
         <% end %>
       </div>
-      
+    </div>
+    <div class="p-6">
       <!-- Manual Testing Stats -->
       <div class="grid grid-cols-2 gap-4 mb-6">
-        <div class="text-center p-4 bg-blue-50 rounded-lg">
-          <div class="text-2xl font-bold text-blue-600"><%= @total_test_runs %></div>
-          <div class="text-sm text-blue-700">Test Runs</div>
+        <div class="text-center p-4 bg-gradient-to-br from-blue-50 to-indigo-100 rounded-xl shadow-sm hover:shadow-md transition-shadow duration-200">
+          <div class="text-3xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent"><%= @total_test_runs %></div>
+          <div class="text-sm font-semibold text-blue-700 mt-1">Test Runs</div>
         </div>
-        <div class="text-center p-4 bg-green-50 rounded-lg">
-          <div class="text-2xl font-bold text-green-600"><%= @overall_pass_rate %>%</div>
-          <div class="text-sm text-green-700">Pass Rate</div>
+        <div class="text-center p-4 bg-gradient-to-br from-emerald-50 to-green-100 rounded-xl shadow-sm hover:shadow-md transition-shadow duration-200">
+          <div class="text-3xl font-bold bg-gradient-to-r from-emerald-600 to-green-600 bg-clip-text text-transparent"><%= @overall_pass_rate %>%</div>
+          <div class="text-sm font-semibold text-emerald-700 mt-1">Pass Rate</div>
         </div>
       </div>
 
       <!-- Manual Test Results -->
-      <div class="space-y-3">
+      <div class="space-y-4">
         <div class="flex justify-between items-center">
-          <span class="text-sm text-gray-600">Passed</span>
+          <span class="text-sm font-semibold text-gray-700">Passed</span>
           <div class="flex items-center">
-            <div class="w-32 bg-gray-200 rounded-full h-2 mr-2">
-              <div class="bg-green-500 h-2 rounded-full" style="width: <%= @total_test_results > 0 ? (@passed_tests.to_f / @total_test_results * 100) : 0 %>%"></div>
+            <div class="w-32 bg-gray-200 rounded-full h-3 mr-3 overflow-hidden shadow-inner">
+              <div class="bg-gradient-to-r from-emerald-400 to-green-500 h-3 rounded-full shadow-sm transition-all duration-1000 ease-out" style="width: <%= @total_test_results > 0 ? (@passed_tests.to_f / @total_test_results * 100) : 0 %>%"></div>
             </div>
-            <span class="text-sm font-medium text-gray-900"><%= @passed_tests %></span>
+            <span class="text-sm font-bold text-gray-900 min-w-[2rem]"><%= @passed_tests %></span>
           </div>
         </div>
         <div class="flex justify-between items-center">
-          <span class="text-sm text-gray-600">Failed</span>
+          <span class="text-sm font-semibold text-gray-700">Failed</span>
           <div class="flex items-center">
-            <div class="w-32 bg-gray-200 rounded-full h-2 mr-2">
-              <div class="bg-red-500 h-2 rounded-full" style="width: <%= @total_test_results > 0 ? (@failed_tests.to_f / @total_test_results * 100) : 0 %>%"></div>
+            <div class="w-32 bg-gray-200 rounded-full h-3 mr-3 overflow-hidden shadow-inner">
+              <div class="bg-gradient-to-r from-red-400 to-red-500 h-3 rounded-full shadow-sm transition-all duration-1000 ease-out" style="width: <%= @total_test_results > 0 ? (@failed_tests.to_f / @total_test_results * 100) : 0 %>%"></div>
             </div>
-            <span class="text-sm font-medium text-gray-900"><%= @failed_tests %></span>
+            <span class="text-sm font-bold text-gray-900 min-w-[2rem]"><%= @failed_tests %></span>
           </div>
         </div>
         <div class="flex justify-between items-center">
-          <span class="text-sm text-gray-600">Pending</span>
+          <span class="text-sm font-semibold text-gray-700">Pending</span>
           <div class="flex items-center">
-            <div class="w-32 bg-gray-200 rounded-full h-2 mr-2">
-              <div class="bg-yellow-500 h-2 rounded-full" style="width: <%= @total_test_results > 0 ? (@pending_tests.to_f / @total_test_results * 100) : 0 %>%"></div>
+            <div class="w-32 bg-gray-200 rounded-full h-3 mr-3 overflow-hidden shadow-inner">
+              <div class="bg-gradient-to-r from-amber-400 to-yellow-500 h-3 rounded-full shadow-sm transition-all duration-1000 ease-out" style="width: <%= @total_test_results > 0 ? (@pending_tests.to_f / @total_test_results * 100) : 0 %>%"></div>
             </div>
-            <span class="text-sm font-medium text-gray-900"><%= @pending_tests %></span>
+            <span class="text-sm font-bold text-gray-900 min-w-[2rem]"><%= @pending_tests %></span>
           </div>
         </div>
       </div>
 
       <!-- Quick Actions -->
       <div class="mt-6 flex space-x-3">
-        <%= link_to new_test_case_path, class: "flex-1 bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-2 rounded-md text-sm font-medium text-center" do %>
+        <%= link_to new_test_case_path, class: "flex-1 bg-gradient-to-r from-indigo-500 to-indigo-600 hover:from-indigo-600 hover:to-indigo-700 text-white px-4 py-3 rounded-xl text-sm font-bold text-center shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200" do %>
           New Test Case
         <% end %>
-        <%= link_to new_test_suite_path, class: "flex-1 bg-green-600 hover:bg-green-700 text-white px-3 py-2 rounded-md text-sm font-medium text-center" do %>
+        <%= link_to new_test_suite_path, class: "flex-1 bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-600 hover:to-green-700 text-white px-4 py-3 rounded-xl text-sm font-bold text-center shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200" do %>
           New Suite
         <% end %>
       </div>
@@ -148,73 +157,74 @@
   </div>
 
   <!-- Automated Testing Section -->
-  <div class="bg-white shadow rounded-lg">
-    <div class="px-4 py-5 sm:p-6">
-      <div class="flex items-center justify-between mb-4">
-        <h3 class="text-lg leading-6 font-medium text-gray-900">Automated Testing</h3>
-        <%= link_to junit_uploads_path, class: "text-indigo-600 hover:text-indigo-900 text-sm" do %>
+  <div class="bg-white shadow-xl rounded-2xl border-0 overflow-hidden hover:shadow-2xl transition-all duration-300">
+    <div class="bg-gradient-to-r from-purple-500 to-violet-600 px-6 py-4">
+      <div class="flex items-center justify-between">
+        <h3 class="text-xl font-bold text-white">Automated Testing</h3>
+        <%= link_to junit_uploads_path, class: "bg-white/20 hover:bg-white/30 text-white px-3 py-1 rounded-lg text-sm font-medium transition-all duration-200 backdrop-blur-sm" do %>
           View All →
         <% end %>
       </div>
-      
+    </div>
+    <div class="p-6">
       <!-- Automated Testing Stats -->
       <div class="grid grid-cols-2 gap-4 mb-6">
-        <div class="text-center p-4 bg-purple-50 rounded-lg">
-          <div class="text-2xl font-bold text-purple-600"><%= @parsed_junit_uploads %></div>
-          <div class="text-sm text-purple-700">Successful Uploads</div>
+        <div class="text-center p-4 bg-gradient-to-br from-purple-50 to-violet-100 rounded-xl shadow-sm hover:shadow-md transition-shadow duration-200">
+          <div class="text-3xl font-bold bg-gradient-to-r from-purple-600 to-violet-600 bg-clip-text text-transparent"><%= @parsed_junit_uploads %></div>
+          <div class="text-sm font-semibold text-purple-700 mt-1">Successful Uploads</div>
         </div>
-        <div class="text-center p-4 bg-green-50 rounded-lg">
-          <div class="text-2xl font-bold text-green-600"><%= @automated_pass_rate %>%</div>
-          <div class="text-sm text-green-700">Pass Rate</div>
+        <div class="text-center p-4 bg-gradient-to-br from-emerald-50 to-green-100 rounded-xl shadow-sm hover:shadow-md transition-shadow duration-200">
+          <div class="text-3xl font-bold bg-gradient-to-r from-emerald-600 to-green-600 bg-clip-text text-transparent"><%= @automated_pass_rate %>%</div>
+          <div class="text-sm font-semibold text-emerald-700 mt-1">Pass Rate</div>
         </div>
       </div>
 
       <!-- Automated Test Results -->
-      <div class="space-y-3">
+      <div class="space-y-4">
         <div class="flex justify-between items-center">
-          <span class="text-sm text-gray-600">Passed</span>
+          <span class="text-sm font-semibold text-gray-700">Passed</span>
           <div class="flex items-center">
-            <div class="w-32 bg-gray-200 rounded-full h-2 mr-2">
-              <div class="bg-green-500 h-2 rounded-full" style="width: <%= @total_automated_tests > 0 ? (@passed_automated_tests.to_f / @total_automated_tests * 100) : 0 %>%"></div>
+            <div class="w-32 bg-gray-200 rounded-full h-3 mr-3 overflow-hidden shadow-inner">
+              <div class="bg-gradient-to-r from-emerald-400 to-green-500 h-3 rounded-full shadow-sm transition-all duration-1000 ease-out" style="width: <%= @total_automated_tests > 0 ? (@passed_automated_tests.to_f / @total_automated_tests * 100) : 0 %>%"></div>
             </div>
-            <span class="text-sm font-medium text-gray-900"><%= @passed_automated_tests %></span>
+            <span class="text-sm font-bold text-gray-900 min-w-[2rem]"><%= @passed_automated_tests %></span>
           </div>
         </div>
         <div class="flex justify-between items-center">
-          <span class="text-sm text-gray-600">Failed</span>
+          <span class="text-sm font-semibold text-gray-700">Failed</span>
           <div class="flex items-center">
-            <div class="w-32 bg-gray-200 rounded-full h-2 mr-2">
-              <div class="bg-red-500 h-2 rounded-full" style="width: <%= @total_automated_tests > 0 ? (@failed_automated_tests.to_f / @total_automated_tests * 100) : 0 %>%"></div>
+            <div class="w-32 bg-gray-200 rounded-full h-3 mr-3 overflow-hidden shadow-inner">
+              <div class="bg-gradient-to-r from-red-400 to-red-500 h-3 rounded-full shadow-sm transition-all duration-1000 ease-out" style="width: <%= @total_automated_tests > 0 ? (@failed_automated_tests.to_f / @total_automated_tests * 100) : 0 %>%"></div>
             </div>
-            <span class="text-sm font-medium text-gray-900"><%= @failed_automated_tests %></span>
+            <span class="text-sm font-bold text-gray-900 min-w-[2rem]"><%= @failed_automated_tests %></span>
           </div>
         </div>
         <div class="flex justify-between items-center">
-          <span class="text-sm text-gray-600">Errors</span>
+          <span class="text-sm font-semibold text-gray-700">Errors</span>
           <div class="flex items-center">
-            <div class="w-32 bg-gray-200 rounded-full h-2 mr-2">
-              <div class="bg-orange-500 h-2 rounded-full" style="width: <%= @total_automated_tests > 0 ? (@error_automated_tests.to_f / @total_automated_tests * 100) : 0 %>%"></div>
+            <div class="w-32 bg-gray-200 rounded-full h-3 mr-3 overflow-hidden shadow-inner">
+              <div class="bg-gradient-to-r from-orange-400 to-orange-500 h-3 rounded-full shadow-sm transition-all duration-1000 ease-out" style="width: <%= @total_automated_tests > 0 ? (@error_automated_tests.to_f / @total_automated_tests * 100) : 0 %>%"></div>
             </div>
-            <span class="text-sm font-medium text-gray-900"><%= @error_automated_tests %></span>
+            <span class="text-sm font-bold text-gray-900 min-w-[2rem]"><%= @error_automated_tests %></span>
           </div>
         </div>
         <div class="flex justify-between items-center">
-          <span class="text-sm text-gray-600">Skipped</span>
+          <span class="text-sm font-semibold text-gray-700">Skipped</span>
           <div class="flex items-center">
-            <div class="w-32 bg-gray-200 rounded-full h-2 mr-2">
-              <div class="bg-yellow-500 h-2 rounded-full" style="width: <%= @total_automated_tests > 0 ? (@skipped_automated_tests.to_f / @total_automated_tests * 100) : 0 %>%"></div>
+            <div class="w-32 bg-gray-200 rounded-full h-3 mr-3 overflow-hidden shadow-inner">
+              <div class="bg-gradient-to-r from-amber-400 to-yellow-500 h-3 rounded-full shadow-sm transition-all duration-1000 ease-out" style="width: <%= @total_automated_tests > 0 ? (@skipped_automated_tests.to_f / @total_automated_tests * 100) : 0 %>%"></div>
             </div>
-            <span class="text-sm font-medium text-gray-900"><%= @skipped_automated_tests %></span>
+            <span class="text-sm font-bold text-gray-900 min-w-[2rem]"><%= @skipped_automated_tests %></span>
           </div>
         </div>
       </div>
 
       <!-- Quick Actions -->
       <div class="mt-6 flex space-x-3">
-        <%= link_to new_junit_upload_path, class: "flex-1 bg-purple-600 hover:bg-purple-700 text-white px-3 py-2 rounded-md text-sm font-medium text-center" do %>
+        <%= link_to new_junit_upload_path, class: "flex-1 bg-gradient-to-r from-purple-500 to-violet-600 hover:from-purple-600 hover:to-violet-700 text-white px-4 py-3 rounded-xl text-sm font-bold text-center shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200" do %>
           Upload JUnit
         <% end %>
-        <%= link_to automated_reports_path, class: "flex-1 bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-2 rounded-md text-sm font-medium text-center" do %>
+        <%= link_to automated_reports_path, class: "flex-1 bg-gradient-to-r from-indigo-500 to-indigo-600 hover:from-indigo-600 hover:to-indigo-700 text-white px-4 py-3 rounded-xl text-sm font-bold text-center shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200" do %>
           View Reports
         <% end %>
       </div>
@@ -223,17 +233,113 @@
 </div>
 
 <!-- Testing Trends Chart -->
-<div class="bg-white shadow rounded-lg mb-8">
-  <div class="px-4 py-5 sm:p-6">
-    <h3 class="text-lg leading-6 font-medium text-gray-900 mb-4">Testing Activity Trends (Last 7 Days)</h3>
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-      <div>
-        <h4 class="text-base font-medium text-gray-900 mb-2">Manual Test Results</h4>
-        <%= line_chart @manual_test_trend, height: "200px", colors: ["#6366F1"] %>
+<div class="bg-white shadow-xl rounded-2xl border-0 overflow-hidden mb-8">
+  <div class="bg-gradient-to-r from-gray-50 to-gray-100 px-6 py-4 border-b border-gray-200">
+    <h3 class="text-xl font-bold text-gray-900">Testing Activity Trends (Last 7 Days)</h3>
+  </div>
+  <div class="p-6">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      <!-- Manual Test Results Chart -->
+      <div class="bg-gradient-to-br from-blue-50 to-indigo-100 rounded-xl p-6">
+        <h4 class="text-lg font-bold text-gray-900 mb-4 flex items-center">
+          <div class="w-3 h-3 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-full mr-2"></div>
+          Manual Test Results
+        </h4>
+        <div class="relative h-48 bg-white rounded-lg shadow-inner p-4">
+          <svg class="w-full h-full" viewBox="0 0 300 120">
+            <!-- Grid lines -->
+            <defs>
+              <pattern id="grid" width="30" height="12" patternUnits="userSpaceOnUse">
+                <path d="M 30 0 L 0 0 0 12" fill="none" stroke="#e5e7eb" stroke-width="0.5"/>
+              </pattern>
+            </defs>
+            <rect width="100%" height="100%" fill="url(#grid)" />
+            
+            <!-- Sample trend line for manual tests -->
+            <% 
+              manual_data = @manual_test_trend.values
+              max_val = [manual_data.max, 1].max
+              points = manual_data.each_with_index.map do |val, i|
+                x = (i * 280.0 / [manual_data.length - 1, 1].max) + 10
+                y = 100 - (val * 80.0 / max_val)
+                "#{x},#{y}"
+              end.join(' ')
+            %>
+            <polyline points="<%= points %>" 
+                      fill="none" 
+                      stroke="url(#blueGradient)" 
+                      stroke-width="3" 
+                      stroke-linecap="round"/>
+            
+            <!-- Gradient definition -->
+            <defs>
+              <linearGradient id="blueGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" style="stop-color:#3B82F6"/>
+                <stop offset="100%" style="stop-color:#6366F1"/>
+              </linearGradient>
+            </defs>
+            
+            <!-- Data points -->
+            <% manual_data.each_with_index do |val, i| %>
+              <% 
+                x = (i * 280.0 / [manual_data.length - 1, 1].max) + 10
+                y = 100 - (val * 80.0 / max_val)
+              %>
+              <circle cx="<%= x %>" cy="<%= y %>" r="4" fill="#3B82F6" stroke="white" stroke-width="2" class="hover:r-6 transition-all duration-200">
+                <title><%= val %> tests</title>
+              </circle>
+            <% end %>
+          </svg>
+        </div>
       </div>
-      <div>
-        <h4 class="text-base font-medium text-gray-900 mb-2">Automated Test Results</h4>
-        <%= line_chart @automated_test_trend, height: "200px", colors: ["#8B5CF6"] %>
+      
+      <!-- Automated Test Results Chart -->
+      <div class="bg-gradient-to-br from-purple-50 to-violet-100 rounded-xl p-6">
+        <h4 class="text-lg font-bold text-gray-900 mb-4 flex items-center">
+          <div class="w-3 h-3 bg-gradient-to-r from-purple-500 to-violet-600 rounded-full mr-2"></div>
+          Automated Test Results
+        </h4>
+        <div class="relative h-48 bg-white rounded-lg shadow-inner p-4">
+          <svg class="w-full h-full" viewBox="0 0 300 120">
+            <!-- Grid lines -->
+            <rect width="100%" height="100%" fill="url(#grid)" />
+            
+            <!-- Sample trend line for automated tests -->
+            <% 
+              automated_data = @automated_test_trend.values
+              max_val = [automated_data.max, 1].max
+              points = automated_data.each_with_index.map do |val, i|
+                x = (i * 280.0 / [automated_data.length - 1, 1].max) + 10
+                y = 100 - (val * 80.0 / max_val)
+                "#{x},#{y}"
+              end.join(' ')
+            %>
+            <polyline points="<%= points %>" 
+                      fill="none" 
+                      stroke="url(#purpleGradient)" 
+                      stroke-width="3" 
+                      stroke-linecap="round"/>
+            
+            <!-- Gradient definition -->
+            <defs>
+              <linearGradient id="purpleGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" style="stop-color:#8B5CF6"/>
+                <stop offset="100%" style="stop-color:#7C3AED"/>
+              </linearGradient>
+            </defs>
+            
+            <!-- Data points -->
+            <% automated_data.each_with_index do |val, i| %>
+              <% 
+                x = (i * 280.0 / [automated_data.length - 1, 1].max) + 10
+                y = 100 - (val * 80.0 / max_val)
+              %>
+              <circle cx="<%= x %>" cy="<%= y %>" r="4" fill="#8B5CF6" stroke="white" stroke-width="2" class="hover:r-6 transition-all duration-200">
+                <title><%= val %> tests</title>
+              </circle>
+            <% end %>
+          </svg>
+        </div>
       </div>
     </div>
   </div>
@@ -242,66 +348,125 @@
 <!-- Priority Distribution & Recent Activity -->
 <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
   <!-- Test Case Priority Distribution -->
-  <div class="bg-white shadow rounded-lg">
-    <div class="px-4 py-5 sm:p-6">
-      <h3 class="text-lg leading-6 font-medium text-gray-900 mb-4">Test Case Priority Distribution</h3>
+  <div class="bg-white shadow-xl rounded-2xl border-0 overflow-hidden">
+    <div class="bg-gradient-to-r from-gray-50 to-gray-100 px-6 py-4 border-b border-gray-200">
+      <h3 class="text-xl font-bold text-gray-900">Test Case Priority Distribution</h3>
+    </div>
+    <div class="p-6">
       <% if @priority_distribution.any? %>
-        <%= pie_chart @priority_distribution, height: "300px", colors: ["#EF4444", "#F59E0B", "#10B981", "#6B7280"] %>
+        <div class="relative h-64 flex items-center justify-center">
+          <svg class="w-48 h-48" viewBox="0 0 100 100">
+            <%
+              total = @priority_distribution.values.sum
+              current_angle = 0
+              colors = {
+                'Critical' => '#EF4444',
+                'High' => '#F59E0B', 
+                'Medium' => '#10B981',
+                'Low' => '#6B7280'
+              }
+            %>
+            <% @priority_distribution.each do |priority, count| %>
+              <%
+                percentage = count.to_f / total
+                angle = percentage * 360
+                
+                # Calculate arc path
+                start_x = 50 + 40 * Math.cos((current_angle - 90) * Math::PI / 180)
+                start_y = 50 + 40 * Math.sin((current_angle - 90) * Math::PI / 180)
+                end_x = 50 + 40 * Math.cos((current_angle + angle - 90) * Math::PI / 180)
+                end_y = 50 + 40 * Math.sin((current_angle + angle - 90) * Math::PI / 180)
+                
+                large_arc = angle > 180 ? 1 : 0
+                
+                path = "M 50,50 L #{start_x},#{start_y} A 40,40 0 #{large_arc},1 #{end_x},#{end_y} Z"
+                current_angle += angle
+              %>
+              <path d="<%= path %>" 
+                    fill="<%= colors[priority] || '#6B7280' %>" 
+                    stroke="white" 
+                    stroke-width="2"
+                    class="hover:opacity-80 transition-opacity duration-200">
+                <title><%= priority %>: <%= count %> (<%= (percentage * 100).round(1) %>%)</title>
+              </path>
+            <% end %>
+          </svg>
+        </div>
+        
+        <!-- Legend -->
+        <div class="grid grid-cols-2 gap-3 mt-4">
+          <% @priority_distribution.each do |priority, count| %>
+            <div class="flex items-center space-x-2">
+              <div class="w-3 h-3 rounded-full" style="background-color: <%= colors[priority] || '#6B7280' %>"></div>
+              <span class="text-sm font-medium text-gray-700"><%= priority %></span>
+              <span class="text-sm text-gray-500">(<%= count %>)</span>
+            </div>
+          <% end %>
+        </div>
       <% else %>
-        <div class="flex items-center justify-center h-48 text-gray-500">
-          No test cases available
+        <div class="flex items-center justify-center h-48 text-gray-500 bg-gray-50 rounded-xl">
+          <div class="text-center">
+            <svg class="mx-auto h-12 w-12 text-gray-400 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2-2V7a2 2 0 012-2h2a2 2 0 002 2v2a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 00-2 2h-2a2 2 0 00-2 2v6a2 2 0 01-2 2H9z" />
+            </svg>
+            <p class="font-medium">No test cases available</p>
+          </div>
         </div>
       <% end %>
     </div>
   </div>
 
   <!-- Recent Activity -->
-  <div class="bg-white shadow rounded-lg">
-    <div class="px-4 py-5 sm:p-6">
-      <h3 class="text-lg leading-6 font-medium text-gray-900 mb-4">Recent Activity</h3>
+  <div class="bg-white shadow-xl rounded-2xl border-0 overflow-hidden">
+    <div class="bg-gradient-to-r from-gray-50 to-gray-100 px-6 py-4 border-b border-gray-200">
+      <h3 class="text-xl font-bold text-gray-900">Recent Activity</h3>
+    </div>
+    <div class="p-6">
       <% if @recent_activity.any? %>
         <div class="flow-root">
-          <ul class="-mb-8">
+          <ul class="-mb-8 space-y-4">
             <% @recent_activity.each_with_index do |activity, index| %>
-              <li>
-                <div class="relative pb-8">
-                  <% unless index == @recent_activity.length - 1 %>
-                    <span class="absolute top-4 left-4 -ml-px h-full w-0.5 bg-gray-200" aria-hidden="true"></span>
-                  <% end %>
-                  <div class="relative flex space-x-3">
-                    <div>
-                      <span class="h-8 w-8 rounded-full 
-                        <%= activity[:type] == 'junit_upload' ? 'bg-purple-500' : 'bg-blue-500' %> 
-                        flex items-center justify-center ring-8 ring-white">
-                        <% if activity[:type] == 'junit_upload' %>
-                          <svg class="h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
-                          </svg>
-                        <% else %>
-                          <svg class="h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-                          </svg>
-                        <% end %>
-                      </span>
+              <li class="relative">
+                <% unless index == @recent_activity.length - 1 %>
+                  <span class="absolute top-6 left-6 -ml-px h-full w-0.5 bg-gradient-to-b from-gray-300 to-transparent" aria-hidden="true"></span>
+                <% end %>
+                <div class="relative flex items-start space-x-4 p-3 rounded-xl hover:bg-gray-50 transition-colors duration-200">
+                  <div class="flex-shrink-0">
+                    <div class="h-12 w-12 rounded-xl 
+                      <%= activity[:type] == 'junit_upload' ? 'bg-gradient-to-br from-purple-500 to-violet-600' : 'bg-gradient-to-br from-blue-500 to-indigo-600' %> 
+                      flex items-center justify-center shadow-lg transform hover:scale-110 transition-transform duration-200">
+                      <% if activity[:type] == 'junit_upload' %>
+                        <svg class="h-6 w-6 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                        </svg>
+                      <% else %>
+                        <svg class="h-6 w-6 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                        </svg>
+                      <% end %>
                     </div>
-                    <div class="min-w-0 flex-1 pt-1.5 flex justify-between space-x-4">
-                      <div>
-                        <p class="text-sm text-gray-900">
-                          <%= link_to activity[:title], activity[:link], class: "font-medium hover:text-indigo-600" %>
+                  </div>
+                  <div class="min-w-0 flex-1">
+                    <div class="flex items-center justify-between">
+                      <div class="flex-1">
+                        <p class="text-sm font-semibold text-gray-900 hover:text-indigo-600 transition-colors duration-200">
+                          <%= link_to activity[:title], activity[:link], class: "hover:underline" %>
                         </p>
-                        <p class="text-sm text-gray-500">
-                          <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full 
+                        <div class="mt-1 flex items-center space-x-2">
+                          <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium shadow-sm
                             <%= case activity[:status]
-                                  when 'Parsed', 'Completed' then 'bg-green-100 text-green-800'
-                                  when 'Error', 'Failed' then 'bg-red-100 text-red-800'
-                                  else 'bg-yellow-100 text-yellow-800'
+                                  when 'Parsed', 'Completed' then 'bg-gradient-to-r from-emerald-100 to-green-100 text-emerald-800 border border-emerald-200'
+                                  when 'Error', 'Failed' then 'bg-gradient-to-r from-red-100 to-red-100 text-red-800 border border-red-200'
+                                  else 'bg-gradient-to-r from-amber-100 to-yellow-100 text-amber-800 border border-amber-200'
                                 end %>">
                             <%= activity[:status] %>
                           </span>
-                        </p>
+                        </div>
                       </div>
-                      <div class="text-right text-sm whitespace-nowrap text-gray-500">
-                        <%= time_ago_in_words(activity[:time]) %> ago
+                      <div class="text-right">
+                        <div class="text-xs text-gray-500 font-medium">
+                          <%= time_ago_in_words(activity[:time]) %> ago
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -311,13 +476,73 @@
           </ul>
         </div>
       <% else %>
-        <p class="text-gray-500 text-sm">No recent activity.</p>
+        <div class="text-center py-8">
+          <svg class="mx-auto h-12 w-12 text-gray-400 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          <p class="text-gray-500 text-sm font-medium">No recent activity</p>
+          <p class="text-gray-400 text-xs mt-1">Start testing to see activity here</p>
+        </div>
       <% end %>
     </div>
   </div>
 </div>
 
-<% content_for :javascript do %>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script src="https://unpkg.com/chartkick@4"></script>
+<% content_for :head do %>
+  <style>
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    @keyframes pulse {
+      0%, 100% {
+        opacity: 1;
+      }
+      50% {
+        opacity: 0.8;
+      }
+    }
+    
+    .animate-fade-in-up {
+      animation: fadeInUp 0.6s ease-out;
+    }
+    
+    .animate-pulse-gentle {
+      animation: pulse 2s infinite;
+    }
+    
+    .gradient-card {
+      background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+    
+    .progress-bar {
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .progress-bar::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+      animation: shimmer 2s infinite;
+    }
+    
+    @keyframes shimmer {
+      0% { left: -100%; }
+      100% { left: 100%; }
+    }
+  </style>
 <% end %>

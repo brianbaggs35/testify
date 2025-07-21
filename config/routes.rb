@@ -2,6 +2,8 @@ Rails.application.routes.draw do
   root "dashboard#index"
 
   get "dashboard", to: "dashboard#index"
+  get "search", to: "search#index"
+  
   resources :test_cases
   resources :test_suites do
     member do
