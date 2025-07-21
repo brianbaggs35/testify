@@ -1,0 +1,22 @@
+{
+  "name": "testify",
+  "version": "1.0.0",
+  "description": "This README would normally document whatever steps are necessary to get the application up and running.",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint app/javascript/**/*.js",
+    "lint:fix": "eslint app/javascript/**/*.js --fix"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@eslint/js": "^9.31.0",
+    "eslint": "^8.57.1",
+    "eslint-config-standard": "^17.1.0"
+  }
+}

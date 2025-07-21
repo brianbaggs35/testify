@@ -16,6 +16,14 @@ Rails.application.routes.draw do
   end
   resources :junit_uploads, except: [ :edit, :update ]
 
+  # Reports
+  get "automated_reports", to: "reports#automated_index"
+  get "automated_reports/:id", to: "reports#automated_show", as: :automated_report
+  get "automated_reports/:id/pdf", to: "reports#automated_pdf", as: :automated_report_pdf
+  get "manual_reports", to: "reports#manual_index"
+  get "manual_reports/:id", to: "reports#manual_show", as: :manual_report
+  get "manual_reports/:id/pdf", to: "reports#manual_pdf", as: :manual_report_pdf
+
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
   # Can be used by load balancers and uptime monitors to verify that the app is live.
   get "up" => "rails/health#show", as: :rails_health_check

@@ -10,6 +10,10 @@ class TestCasesController < ApplicationController
   end
 
   def show
+    respond_to do |format|
+      format.html
+      format.json { render json: @test_case }
+    end
   end
 
   def new
