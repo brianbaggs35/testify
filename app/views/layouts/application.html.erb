@@ -132,7 +132,7 @@
       <div class="relative z-10 flex-shrink-0 flex h-16 bg-white shadow-sm border-b border-gray-200">
         <div class="flex-1 flex justify-between px-4 sm:px-6">
           <div class="flex-1 flex">
-            <div class="w-full flex md:ml-0">
+            <%= form_with url: search_path, method: :get, local: true, class: "w-full flex md:ml-0" do |form| %>
               <label for="search" class="sr-only">Search</label>
               <div class="relative w-full text-gray-400 focus-within:text-gray-600">
                 <div class="absolute inset-y-0 left-0 flex items-center pointer-events-none">
@@ -140,9 +140,14 @@
                     <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
                   </svg>
                 </div>
-                <input id="search" name="search" class="block w-full h-full pl-8 pr-3 py-2 border-transparent text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-0 focus:border-transparent focus:placeholder-gray-400 sm:text-sm" placeholder="Search..." type="search">
+                <%= form.text_field :q, 
+                      id: "search",
+                      name: "q",
+                      class: "block w-full h-full pl-8 pr-3 py-2 border-transparent text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent focus:placeholder-gray-400 sm:text-sm rounded-md",
+                      placeholder: "Search test cases, suites, uploads...",
+                      autocomplete: "off" %>
               </div>
-            </div>
+            <% end %>
           </div>
           <div class="ml-2 flex items-center space-x-4 sm:ml-6 sm:space-x-6">
             <!-- Quick actions -->
